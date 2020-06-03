@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="888.0" prefWidth="1506.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="888.0" prefWidth="1506.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plantenApp.ControllerValidatiePlant">
    <children>
       <TitledPane animated="false" collapsible="false" text="Controle">
         <content>
@@ -22,12 +22,12 @@
                      <children>
                         <HBox>
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="OK">
+                              <Button mnemonicParsing="false" onMouseClicked="#Clicked_Ok" prefHeight="50.0" prefWidth="150.0" text="OK">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Button>
-                              <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Niet OK">
+                              <Button mnemonicParsing="false" onMouseClicked="#Clicked_NietOk" prefHeight="50.0" prefWidth="150.0" text="Niet OK">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -111,12 +111,12 @@
                                                                         <Font size="14.0" />
                                                                      </font>
                                                                   </Label>
-                                                                  <Label prefHeight="30.0" text="Values" textFill="#838383">
+                                                                  <Label fx:id="lblBehandeling1" prefHeight="30.0" text="Values" textFill="#838383">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
                                                                   </Label>
-                                                                  <Label prefHeight="30.0" text="Values" textFill="#838383">
+                                                                  <Label fx:id="lblBehandeling2" prefHeight="30.0" text="Values" textFill="#838383">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
@@ -131,12 +131,12 @@
                                                                         <Font size="14.0" />
                                                                      </font>
                                                                   </Label>
-                                                                  <Label prefHeight="30.0" text="Values" textFill="#838383">
+                                                                  <Label fx:id="lblFrequentie1" prefHeight="30.0" text="Values" textFill="#838383">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
                                                                   </Label>
-                                                                  <Label prefHeight="30.0" text="Values" textFill="#838383">
+                                                                  <Label fx:id="lblFrequentie2" prefHeight="30.0" text="Values" textFill="#838383">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
@@ -212,62 +212,62 @@
                                                                   </HBox>
                                                                   <HBox>
                                                                      <children>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxJan1" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxFeb1" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxMaa1" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxApr1" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxMei1" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxJun1" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxJul1" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxAug1" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxSep1" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxOkt1" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxNov1" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxDec1" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
@@ -276,62 +276,62 @@
                                                                   </HBox>
                                                                   <HBox>
                                                                      <children>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxJan2" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxFeb2" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxMaa2" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxApr2" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxMei2" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxJun2" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxJul2" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxAug2" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxSep2" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxOkt2" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxNov2" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
                                                                         </CheckBox>
-                                                                        <CheckBox mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                                                                        <CheckBox fx:id="cbxDec2" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                                                                            <font>
                                                                               <Font size="14.0" />
                                                                            </font>
@@ -394,7 +394,7 @@
                                                                         <Font size="14.0" />
                                                                      </font>
                                                                   </Label>
-                                                                  <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                                  <Label fx:id="lblXValue" prefHeight="30.0" text="Value" textFill="#838383">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
@@ -408,7 +408,7 @@
                                                                         <Font size="14.0" />
                                                                      </font>
                                                                   </Label>
-                                                                  <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                                  <Label fx:id="lblYValue" prefHeight="30.0" text="Value" textFill="#838383">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
@@ -424,27 +424,27 @@
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                            <Label fx:id="lblType" prefHeight="30.0" text="Value" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Value" textFill="RED">
+                                                            <Label fx:id="lblValue" prefHeight="30.0" text="Value" textFill="RED">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                            <Label fx:id="lblGeslacht" prefHeight="30.0" text="Value" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                            <Label fx:id="lblSoort" prefHeight="30.0" text="Value" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                            <Label fx:id="lblVariant" prefHeight="30.0" text="Value" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
@@ -492,46 +492,46 @@
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                            <Label fx:id="lblOntwikkelingssnelheid" prefHeight="30.0" text="Value" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
                                                             <HBox>
                                                                <children>
-                                                                  <CheckBox mnemonicParsing="false" prefHeight="30.0" text="I ">
+                                                                  <CheckBox fx:id="cbxSociabiliteit1" mnemonicParsing="false" prefHeight="30.0" text="I ">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
                                                                   </CheckBox>
-                                                                  <CheckBox mnemonicParsing="false" prefHeight="30.0" text="II ">
+                                                                  <CheckBox fx:id="cbxSociabiliteit2" mnemonicParsing="false" prefHeight="30.0" text="II ">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
                                                                   </CheckBox>
-                                                                  <CheckBox mnemonicParsing="false" prefHeight="30.0" text="III ">
+                                                                  <CheckBox fx:id="cbxSociabiliteit3" mnemonicParsing="false" prefHeight="30.0" text="III ">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
                                                                   </CheckBox>
-                                                                  <CheckBox mnemonicParsing="false" prefHeight="30.0" text="IV ">
+                                                                  <CheckBox fx:id="cbxSociabiliteit4" mnemonicParsing="false" prefHeight="30.0" text="IV ">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
                                                                   </CheckBox>
-                                                                  <CheckBox mnemonicParsing="false" prefHeight="30.0" text="V ">
+                                                                  <CheckBox fx:id="cbxSociabileit5" mnemonicParsing="false" prefHeight="30.0" text="V ">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
                                                                   </CheckBox>
                                                                </children>
                                                             </HBox>
-                                                            <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                            <Label fx:id="lblStrategie" prefHeight="30.0" text="Value" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Values" textFill="#838383">
+                                                            <Label fx:id="lblLevensduur" prefHeight="30.0" text="Values" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
@@ -596,8 +596,8 @@
                                                             </Label>
                                                             <HBox>
                                                                <children>
-                                                                  <Slider prefHeight="30.0" />
-                                                                  <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                                  <Slider fx:id="sldrBezonning" prefHeight="30.0" />
+                                                                  <Label fx:id="lblBezonning" prefHeight="30.0" text="Value" textFill="#838383">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
@@ -606,8 +606,8 @@
                                                             </HBox>
                                                             <HBox>
                                                                <children>
-                                                                  <Slider prefHeight="30.0" />
-                                                                  <Label prefHeight="30.0" text="Value" textFill="RED">
+                                                                  <Slider fx:id="sldrVochtBehoefte" prefHeight="30.0" />
+                                                                  <Label fx:id="lblVochtBehoefte" prefHeight="30.0" text="Value" textFill="RED">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
@@ -616,25 +616,25 @@
                                                             </HBox>
                                                             <HBox>
                                                                <children>
-                                                                  <Slider prefHeight="30.0" />
-                                                                  <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                                  <Slider fx:id="sldrVoedingsbehoefte" prefHeight="30.0" />
+                                                                  <Label fx:id="lblVoedingsbehoefte" prefHeight="30.0" text="Value" textFill="#838383">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
                                                                   </Label>
                                                                </children>
                                                             </HBox>
-                                                            <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                            <Label fx:id="lblReactie" prefHeight="30.0" text="Value" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                            <Label fx:id="lblGrondsoort" prefHeight="30.0" text="Value" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Values" textFill="#838383">
+                                                            <Label fx:id="lblHabitat" prefHeight="30.0" text="Values" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
@@ -709,8 +709,8 @@
                                                             </Label>
                                                             <HBox>
                                                                <children>
-                                                                  <Slider max="5.0" prefHeight="30.0" />
-                                                                  <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                                  <Slider fx:id="sldrNectarwaarde" max="5.0" prefHeight="30.0" />
+                                                                  <Label fx:id="lblNectarwaarde" prefHeight="30.0" text="Value" textFill="#838383">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
@@ -719,40 +719,40 @@
                                                             </HBox>
                                                             <HBox>
                                                                <children>
-                                                                  <Slider max="5.0" prefHeight="30.0" />
-                                                                  <Label prefHeight="30.0" text="Value" textFill="#838383">
+                                                                  <Slider fx:id="sldrPollenwaarde" max="5.0" prefHeight="30.0" />
+                                                                  <Label fx:id="lblPollenwaarde" prefHeight="30.0" text="Value" textFill="#838383">
                                                                      <font>
                                                                         <Font size="14.0" />
                                                                      </font>
                                                                   </Label>
                                                                </children>
                                                             </HBox>
-                                                            <Label prefHeight="30.0" text="Ja" textFill="#838383">
+                                                            <Label fx:id="lblBijvriendelijk" prefHeight="30.0" text="Ja" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Ja" textFill="#838383">
+                                                            <Label fx:id="lblVlindervriendelijk" prefHeight="30.0" text="Ja" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Nee" textFill="RED">
+                                                            <Label fx:id="lblEetbaar" prefHeight="30.0" text="Nee" textFill="RED">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Ja" textFill="#838383">
+                                                            <Label fx:id="lblKruidgebruik" prefHeight="30.0" text="Ja" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Onbekend" textFill="#838383">
+                                                            <Label fx:id="lblGeurend" prefHeight="30.0" text="Onbekend" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
                                                             </Label>
-                                                            <Label prefHeight="30.0" text="Nee" textFill="#838383">
+                                                            <Label fx:id="lblVorstgevoelig" prefHeight="30.0" text="Nee" textFill="#838383">
                                                                <font>
                                                                   <Font size="14.0" />
                                                                </font>
