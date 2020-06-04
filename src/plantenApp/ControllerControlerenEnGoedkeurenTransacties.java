@@ -2,6 +2,7 @@
 package plantenApp;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,50 +12,120 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import plantenApp.java.dao.Database;
+import plantenApp.java.dao.PlantDAO;
+import plantenApp.java.model.Plant;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ControllerControlerenEnGoedkeurenTransacties
 {
-    public VBox VBoxToCheckList;
-    private int amountToCheck = 1;
-
-    public void initialize()
+    // Auteur Dario
+    // enum aangemaakt voor magic numbers te vermijden voor te zoeken naar de status van de plant
+    public enum Status
     {
-        AddToCheckLine("roos", "jan");
-        AddToCheckLine("petunia", "dan");
-        AddToCheckLine("tulp", "marie");
+        inBewerking (0),
+        teControleren (1),
+        goedgekeurt (2);
+
+        private final int statusValue;
+
+        Status(int i)
+        {
+            this.statusValue = i;
+        }
+        public int GetStatusValeu(){return statusValue;}
     }
 
+    // Variabelen
+    public List<Plant> lijstTeControleren = new ArrayList<Plant>();
+    PlantDAO plantDAO;
+    Connection dbconnection = Database.getInstance().getConnection();
+
+    public VBox VBoxPlantNaam;
+    public VBox VBoxNaamGebruiker;
+    public VBox VBoxButtonsControleer;
+    public HBox HBoxListToCheck;
+
+    private final Status StatusToCheck = Status.teControleren;
+
+    // Constructor
+    public ControllerControlerenEnGoedkeurenTransacties() throws SQLException
+    {
+    }
+
+    // Initialize
+    public void initialize() throws SQLException
+    {
+        plantDAO= new PlantDAO(dbconnection);
+
+        lijstTeControleren = plantDAO.GetPlantIdByStatus(StatusToCheck.statusValue);
+
+        if (lijstTeControleren.size() == 0)
+        {
+            Label temp = new Label("Er zijn geen planten te controleren.");
+            temp.setStyle("-fx-font: 14 system;");
+            temp.setPadding(new Insets(0,30,0,30));
+            HBoxListToCheck.getChildren().clear();
+            HBoxListToCheck.getChildren().add(temp);
+        }
+        else
+        {
+            for(int i = 0 ; i < lijstTeControleren.size(); i++)
+            {
+                AddToCheckLine(lijstTeControleren.get(i).getId(), lijstTeControleren.get(i).getFgsv().trim(), "jan");
+            }
+        }
+    }
+
+    // Functions
     // Auteur Dario
     // genereert een nieuwe regel dat gecontroleert moet worden
-    private void AddToCheckLine(String plantnaam, String naamGebruiker)
+    private void AddToCheckLine(int plantID, String plantnaam, String naamGebruiker)
     {
-        Label emptyNextLine = new Label("");
-        Label lineToCheck = new Label("Plant: " + plantnaam + " \tAangepast door: " + naamGebruiker + " \t");
+        Label linePlantnaam = new Label("Plant: " + plantnaam);
+        Label lineNaamGebruiker = new Label("Aangepast door: " + naamGebruiker);
 
-        emptyNextLine.setStyle("-fx-font: 14 system;");
-        lineToCheck.setStyle("-fx-font: 14 system;");
+        linePlantnaam.setStyle("-fx-font: 14 system;");
+        lineNaamGebruiker.setStyle("-fx-font: 14 system;");
 
         Button bttnControleer = new Button("Controleer");
-        bttnControleer.setId(Integer.toString(amountToCheck));
+        bttnControleer.setId(Integer.toString(plantID));
         bttnControleer.setStyle("-fx-font: 14 system;");
-        bttnControleer.setOnAction(actionEvent -> {ButtonEventGoToCheckID(bttnControleer);});
 
-        HBox temp = new HBox();
-        temp.getChildren().add(lineToCheck);
-        temp.getChildren().add(bttnControleer);
+        bttnControleer.setOnAction(actionEvent -> {
+            try
+            {
+                ButtonEventGoToCheckID(bttnControleer);
+            } catch (IOException | SQLException e)
+            {
+                e.printStackTrace();
+            }
+        });
 
-        VBoxToCheckList.getChildren().add(emptyNextLine);
-        VBoxToCheckList.getChildren().add(temp);
-        amountToCheck++;
+        VBoxPlantNaam.getChildren().add(linePlantnaam);
+        VBoxNaamGebruiker.getChildren().add(lineNaamGebruiker);
+        VBoxButtonsControleer.getChildren().add(bttnControleer);
     }
 
     // Auteur Dario
     // opent de gedetailleerde scherm met de gevraagde ID
-    private void ButtonEventGoToCheckID(Button button)
+    private void ButtonEventGoToCheckID(Button button) throws IOException, SQLException
     {
-        button.setText(button.getId());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/GedetailleerdeFiches_(teControleren).fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        Stage window = (Stage) button.getScene().getWindow();
+
+        ControllerValidatiePlant controller = loader.getController();
+        controller.initialize(Integer.parseInt(button.getId()));
+
+        window.setScene(scene);
+        window.show();
     }
 
     // Auteur Dario

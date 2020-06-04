@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**@author Siebe*/
 public class PlantDAO implements Queries {
@@ -14,11 +16,41 @@ public class PlantDAO implements Queries {
     private Connection dbConnection;
     private PreparedStatement stmtSelectById;
     private PreparedStatement stmtSelectByPlant;
+    private PreparedStatement stmtSelectByStatus;
 
     public PlantDAO(Connection dbConnection) throws SQLException {
         this.dbConnection = dbConnection;
         stmtSelectById = dbConnection.prepareStatement(GETPLANTBYID);
         stmtSelectByPlant = dbConnection.prepareStatement(GETIDSBYPLANT);
+        stmtSelectByStatus = dbConnection.prepareStatement(GETPLANTBYSTATUS);
+    }
+
+    // Auteur Dario
+    public List<Plant> GetPlantIdByStatus(int status) throws SQLException
+    {
+        List<Plant> lijstPlantId = new ArrayList<Plant>();
+        Plant plant = null;
+
+        stmtSelectByStatus.setInt(1, status);
+        ResultSet rs = stmtSelectByStatus.executeQuery();
+        while (rs.next())
+        {
+            plant = new Plant(
+                    rs.getInt("plant_id"),
+                    rs.getString("type"),
+                    rs.getString("familie"),
+                    rs.getString("geslacht"),
+                    rs.getString("soort"),
+                    rs.getString("variatie"),
+                    rs.getInt("plantdichtheid_min"),
+                    rs.getInt("plantdichtheid_max"),
+                    rs.getString("fgsv"),
+                    rs.getInt("status"));
+
+            lijstPlantId.add(plant);
+        }
+
+       return lijstPlantId;
     }
 
     /**@author Siebe
@@ -39,7 +71,9 @@ public class PlantDAO implements Queries {
                     rs.getString("soort"),
                     rs.getString("variatie"),
                     rs.getInt("plantdichtheid_min"),
-                    rs.getInt("plantdichtheid_max")
+                    rs.getInt("plantdichtheid_max"),
+                    rs.getString("fgsv"),
+                    rs.getInt("status")
             );
         }
         return plant;
