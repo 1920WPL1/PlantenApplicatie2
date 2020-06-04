@@ -4,15 +4,15 @@ package plantenApp.java.model;
 public class Extra {
     private int id;
     private int plant_id;
-    private int nectarwaarde;
-    private int pollenwaarde;
+    private String nectarwaarde;
+    private String pollenwaarde;
     private String bijvriendelijk;
     private String eetbaar;
     private String kruidgebruik;
     private String geurend;
     private String vorstgevoelig;
 
-    public Extra(int id, int plant_id, int nectarwaarde, int pollenwaarde, String bijvriendelijk, String eetbaar, String kruidgebruik, String geurend, String vorstgevoelig) {
+    public Extra(int id, int plant_id, String nectarwaarde, String pollenwaarde, String bijvriendelijk, String eetbaar, String kruidgebruik, String geurend, String vorstgevoelig) {
         this.id = id;
         this.plant_id = plant_id;
         this.nectarwaarde = nectarwaarde;
@@ -32,11 +32,11 @@ public class Extra {
         return plant_id;
     }
 
-    public int getNectarwaarde() {
+    public String getNectarwaarde() {
         return nectarwaarde;
     }
 
-    public int getPollenwaarde() {
+    public String getPollenwaarde() {
         return pollenwaarde;
     }
 

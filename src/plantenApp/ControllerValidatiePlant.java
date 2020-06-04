@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import plantenApp.java.dao.*;
@@ -14,6 +16,7 @@ import plantenApp.java.model.AbiotischeFactoren;
 import plantenApp.java.model.Fenotype;
 import plantenApp.java.model.Plant;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -50,16 +53,10 @@ public class ControllerValidatiePlant {
     public Label lblXValue;
     public Label lblYValue;
     public Label lblType;
-    public Label lblValue;
     public Label lblGeslacht;
     public Label lblSoort;
     public Label lblVariant;
     public Label lblOntwikkelingssnelheid;
-    public CheckBox cbxSociabiliteit1;
-    public CheckBox cbxSociabiliteit2;
-    public CheckBox cbxSociabiliteit3;
-    public CheckBox cbxSociabiliteit4;
-    public CheckBox cbxSociabileit5;
     public Label lblStrategie;
     public Label lblLevensduur;
     public Slider sldrBezonning;
@@ -81,37 +78,65 @@ public class ControllerValidatiePlant {
     public Label lblKruidgebruik;
     public Label lblGeurend;
     public Label lblVorstgevoelig;
-    PlantDAO plantDAO;
+    public ImageView imgHabitus;
+    public ImageView imgBlad;
+    public ImageView imgBloei;
+    public CheckBox cbxSoc1;
+    public CheckBox cbxSoc2;
+    public CheckBox cbxSoc3;
+    public CheckBox cbxSoc4;
+    public CheckBox cbxSoc5;
+    public Label lblsoc;
+    public Label lblFamilie;
+
+
+
+    public PlantDAO plantDAO;
     Connection dbConnection;
-    AbiotischeFactorenDAO abiotischeFactorenDAO;
+    public AbiotischeFactorenDAO abiotischeFactorenDAO;
     BeheerDAO beheerDAO;
     CommensalismeDAO commensalismeDAO;
     FotoDAO fotoDAO;
     InfoTablesDAO infoTablesDAO;
     ExtraDAO extraDAO;
-    Plant plant;
+    public Plant plant;
 
     public ControllerValidatiePlant() throws SQLException {
     }
 
     public void initialize() throws SQLException {
-        Connection dbcon = Database.getInstance().getConnection();
-        PlantDAO dao = new PlantDAO(dbcon);
-        Plant plant = dao.getPlantById(101);
+        DBInitialize();
+        plant = plantDAO.getPlantById(101);
         System.out.println(plant.getFamilie());
 
-        DBInitialize();
+
         BeheerInitialize();
         CommensalismeInitialize();
+        AbiotischeInitialize();
+        ExtraInitialize();
+        FotoInitialize();
+        StandaardInitialize();
     }
 
 
     public void Clicked_Ok(MouseEvent mouseEvent) throws IOException {
-        Schermkiezen(mouseEvent, "Zoekscherm");
+        Object[] options = {"OK", "CANCEL"};
+        if (
+                JOptionPane.showOptionDialog(null, "You clicked OK, Click OK to continue", "Clicked OK",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+                        null, options, options[0]) == 0) {
+            Schermkiezen(mouseEvent, "ControlerenEnGoedkeurenTransacties");
+        }
     }
 
     public void Clicked_NietOk(MouseEvent mouseEvent) throws IOException {
-        Schermkiezen(mouseEvent, "Zoekscherm");
+        Object[] options = {"OK", "CANCEL"};
+        if (
+                JOptionPane.showOptionDialog(null, "You clicked NIET OK, Click OK to continue", "Clicked Niet OK",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+                        null, options, options[0]) == 0) {
+            Schermkiezen(mouseEvent, "ControlerenEnGoedkeurenTransacties");
+        }
     }
 
     public void Schermkiezen(MouseEvent mouseEvent, String scherm) throws IOException {
@@ -134,20 +159,107 @@ public class ControllerValidatiePlant {
 
     }
 
+    private void AbiotischeInitialize() throws SQLException {
+        System.out.println(abiotischeFactorenDAO.getById(101).getBezonning());
+        plant.setAbiotischeFactoren(abiotischeFactorenDAO.getById(101));
+        lblBezonning.setText("" + plant.getAbiotischeFactoren().getBezonning());
+        lblVochtBehoefte.setText("" + plant.getAbiotischeFactoren().getVochtbehoefte());
+        lblVoedingsbehoefte.setText("" + plant.getAbiotischeFactoren().getVoedingsbehoefte());
+        lblReactie.setText("" + plant.getAbiotischeFactoren().getReactieAntagonistischeOmgeving());
+        lblGrondsoort.setText("" + plant.getAbiotischeFactoren().getGrondsoort());
+        lblHabitat.setText("" + plant.getAbiotischeFactoren().getMultiEigenschappen().get(1).getValue());
+    }
+
     private void BeheerInitialize() throws SQLException {
-        plant.setBeheer(plant.getBeheer());
-        lblBehandeling1.setText("" + plantDAO.getPlantById(1).getBeheer());
-        lblFrequentie1.setText("" + plantDAO.getPlantById(1).getBeheer());
-        lblBehandeling2.setText("" + plantDAO.getPlantById(2).getBeheer());
-        lblFrequentie2.setText("" + plantDAO.getPlantById(2).getBeheer());
+        plant.setBeheer(beheerDAO.getById(101));
+        lblBehandeling1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getOpmerking());
+        lblFrequentie1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getFrequentie());
+        //cbxJan1.isSelected(plant.getBeheer().getMultiEigenschappen().get(0).getMaand());
+        cbxFeb1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getMaand());
+        cbxMaa1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getMaand());
+        cbxApr1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getMaand());
+        cbxMei1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getMaand());
+        cbxJun1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getMaand());
+        cbxJul1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getMaand());
+        cbxAug1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getMaand());
+        cbxJul1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getMaand());
+        cbxSep1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getMaand());
+        cbxOkt1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getMaand());
+        cbxNov1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getMaand());
+        cbxDec1.setText("" + plant.getBeheer().getMultiEigenschappen().get(0).getMaand());
 
     }
 
     private void CommensalismeInitialize() throws SQLException {
-        plant.setCommensalisme(plant.getCommensalisme());
-        lblOntwikkelingssnelheid.setText("" + plantDAO.getPlantById(1).getCommensalisme());
-        lblStrategie.setText("" + plantDAO.getPlantById(1).getCommensalisme());
-        lblLevensduur.setText("" + plantDAO.getPlantById(1).getCommensalisme());
+        plant.setCommensalisme(commensalismeDAO.getById(101));
+        lblOntwikkelingssnelheid.setText("" + plant.getCommensalisme().getOntwikkelingssnelheid());
+        lblStrategie.setText("" + plant.getCommensalisme().getStrategie());
+        lblLevensduur.setText("" + infoTablesDAO.getInfoTables().getConcurentiekrachten().get(1));
+        lblsoc.setText("" + plant.getCommensalisme().getMultiEigenschappen().get(1).getValue());
+        /*if (){
+            cbxSoc1.setSelected(true);
+            cbxSoc2.setSelected(false);
+            cbxSoc3.setSelected(false);
+            cbxSoc4.setSelected(false);
+            cbxSoc5.setSelected(false);
+        } else if (){
+            cbxSoc1.setSelected(false);
+            cbxSoc2.setSelected(true);
+            cbxSoc3.setSelected(false);
+            cbxSoc4.setSelected(false);
+            cbxSoc5.setSelected(false);
+        } else if (){
+            cbxSoc1.setSelected(false);
+            cbxSoc2.setSelected(false);
+            cbxSoc3.setSelected(true);
+            cbxSoc4.setSelected(false);
+            cbxSoc5.setSelected(false);
+        } else if (){
+            cbxSoc1.setSelected(false);
+            cbxSoc2.setSelected(false);
+            cbxSoc3.setSelected(false);
+            cbxSoc4.setSelected(true);
+            cbxSoc5.setSelected(false);
+        } else {
+            cbxSoc1.setSelected(false);
+            cbxSoc2.setSelected(false);
+            cbxSoc3.setSelected(false);
+            cbxSoc4.setSelected(false);
+            cbxSoc5.setSelected(true);
+        }*/
+    }
+
+    private void ExtraInitialize() throws SQLException {
+        plant.setExtra(extraDAO.getExtraById(101));
+        lblNectarwaarde.setText("" + plant.getExtra().getNectarwaarde());
+        lblPollenwaarde.setText("" + plant.getExtra().getPollenwaarde());
+        lblBijvriendelijk.setText("" + plant.getExtra().getBijvriendelijk());
+        //lblVlindervriendelijk.setText("" + plant.getExtra());
+        lblEetbaar.setText("" + plant.getExtra().getEetbaar());
+        lblKruidgebruik.setText("" + plant.getExtra().getKruidgebruik());
+        lblGeurend.setText("" + plant.getExtra().getGeurend());
+        lblVorstgevoelig.setText("" + plant.getExtra().getVorstgevoelig());
+    }
+
+    private void FotoInitialize() throws SQLException {
+        try {
+            plant.setFoto(fotoDAO.getFotoById(101));
+
+            imgHabitus.setImage((Image) plant.getFoto().getFotos().get(1).getImage());
+            imgBlad.setImage((Image) plant.getFoto().getFotos().get(1).getImage());
+            imgBloei.setImage((Image) plant.getFoto().getFotos().get(1).getImage());
+        } catch (NullPointerException npe) {
+            System.out.println("Geen foto");
+        }
+
+    }
+
+    private void StandaardInitialize() throws SQLException {
+        lblType.setText("" + plant.getType());
+        lblFamilie.setText("" + plant.getFamilie());
+        lblGeslacht.setText("" + plant.getGeslacht());
+        lblSoort.setText("" + plant.getSoort());
+        lblVariant.setText("" + plant.getVariatie());
     }
 
 
