@@ -33,11 +33,11 @@ public class ExtraDAO implements Queries {
             extra = new Extra(
                     rs.getInt("extra_id"),
                     rs.getInt("plant_id"),
-                    rs.getInt("nectarwaarde"),
-                    rs.getInt("pollenwaarde"),
+                    rs.getString("nectarwaarde"),
+                    rs.getString("pollenwaarde"),
                     rs.getString("bijvriendelijk"),
-                    rs.getString("eetbaar_kruidgebruik"),
-                    rs.getString("eetbaar_kruidgebruik"),
+                    rs.getString("eetbaar"),
+                    rs.getString("kruidgebruik"),
                     rs.getString("geurend"),
                     rs.getString("vorstgevoelig")
             );
