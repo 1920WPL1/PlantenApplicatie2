@@ -1,5 +1,7 @@
 package plantenApp.java.model;
 
+import java.util.Date;
+
 /**
  * @author Siebe
  */

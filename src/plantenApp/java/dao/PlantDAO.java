@@ -28,15 +28,13 @@ public class PlantDAO implements Queries {
     }
 
     // Auteur Dario
-    public List<Plant> GetPlantIdByStatus(int status) throws SQLException
-    {
+    public List<Plant> GetPlantIdByStatus(int status) throws SQLException {
         List<Plant> lijstPlantId = new ArrayList<Plant>();
         Plant plant = null;
 
         stmtSelectByStatus.setInt(1, status);
         ResultSet rs = stmtSelectByStatus.executeQuery();
-        while (rs.next())
-        {
+        while (rs.next()) {
             plant = new Plant(
                     rs.getInt("plant_id"),
                     rs.getString("type"),
@@ -54,12 +52,13 @@ public class PlantDAO implements Queries {
             lijstPlantId.add(plant);
         }
 
-       return lijstPlantId;
+        return lijstPlantId;
     }
 
-    /**@author Siebe
+    /**
      * @param id -> plant_id
      * @return -> alle basis factoren van de specifieke plant
+     * @author Siebe
      * @author Siebe
      */
     public Plant getPlantById(int id) throws SQLException {
@@ -114,30 +113,5 @@ public class PlantDAO implements Queries {
         }
         return ids;
     }
-
-
-    public List<Plant> GetPlantIdByStatus(int status) throws SQLException {
-        List<Plant> lijstPlantId = new ArrayList<Plant>();
-        Plant plant = null;
-
-        stmtSelectByStatus.setInt(1, status);
-        ResultSet rs = stmtSelectByStatus.executeQuery();
-        while (rs.next()) {
-            plant = new Plant(
-                    rs.getInt("plant_id"),
-                    rs.getString("type"),
-                    rs.getString("familie"),
-                    rs.getString("geslacht"),
-                    rs.getString("soort"),
-                    rs.getString("variatie"),
-                    rs.getInt("plantdichtheid_min"),
-                    rs.getInt("plantdichtheid_max"),
-                    rs.getString("fgsv"),
-                    rs.getInt("status"));
-
-            lijstPlantId.add(plant);
-        }
-
-        return lijstPlantId;
-    }
+    
 }
