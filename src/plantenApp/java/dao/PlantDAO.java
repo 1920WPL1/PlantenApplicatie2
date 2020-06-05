@@ -45,7 +45,9 @@ public class PlantDAO implements Queries {
                     rs.getInt("plantdichtheid_min"),
                     rs.getInt("plantdichtheid_max"),
                     rs.getString("fgsv"),
-                    rs.getInt("status"));
+                    rs.getInt("status"),
+                    rs.getDate("last_updated"),
+                    rs.getInt("gebruiker_id"));
 
             lijstPlantId.add(plant);
         }
@@ -73,8 +75,9 @@ public class PlantDAO implements Queries {
                     rs.getInt("plantdichtheid_min"),
                     rs.getInt("plantdichtheid_max"),
                     rs.getString("fgsv"),
-                    rs.getInt("status")
-            );
+                    rs.getInt("status"),
+                    rs.getDate("last_updated"),
+                    rs.getInt("gebruiker_id"));
         }
         return plant;
     }

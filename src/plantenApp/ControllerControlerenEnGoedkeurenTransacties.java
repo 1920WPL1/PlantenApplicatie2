@@ -8,7 +8,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -16,10 +19,12 @@ import plantenApp.java.dao.Database;
 import plantenApp.java.dao.PlantDAO;
 import plantenApp.java.model.Plant;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ControllerControlerenEnGoedkeurenTransacties
@@ -44,14 +49,19 @@ public class ControllerControlerenEnGoedkeurenTransacties
     // Variabelen
     public List<Plant> lijstTeControleren = new ArrayList<Plant>();
     PlantDAO plantDAO;
-    Connection dbconnection = Database.getInstance().getConnection();
+    Connection dbconnection;
+
+    public AnchorPane AnchorPaneBase;
+    public TitledPane TitledPaneMain;
+    public ScrollPane ScrollPaneList;
 
     public VBox VBoxPlantNaam;
     public VBox VBoxNaamGebruiker;
+    public VBox VBoxDatumToegevoegd;
     public VBox VBoxButtonsControleer;
     public HBox HBoxListToCheck;
 
-    private final Status StatusToCheck = Status.teControleren;
+    private final Status StatusToCheck = Status.inBewerking;
 
     // Constructor
     public ControllerControlerenEnGoedkeurenTransacties() throws SQLException
@@ -61,9 +71,16 @@ public class ControllerControlerenEnGoedkeurenTransacties
     // Initialize
     public void initialize() throws SQLException
     {
-        plantDAO= new PlantDAO(dbconnection);
+        try
+        {
+            dbconnection  = Database.getInstance().getConnection();
+            plantDAO = new PlantDAO(dbconnection);
+            lijstTeControleren = plantDAO.GetPlantIdByStatus(StatusToCheck.statusValue);
+        }catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Er liep iets fout met de verbinding");
+        }
 
-        lijstTeControleren = plantDAO.GetPlantIdByStatus(StatusToCheck.statusValue);
 
         if (lijstTeControleren.size() == 0)
         {
@@ -77,21 +94,25 @@ public class ControllerControlerenEnGoedkeurenTransacties
         {
             for(int i = 0 ; i < lijstTeControleren.size(); i++)
             {
-                AddToCheckLine(lijstTeControleren.get(i).getId(), lijstTeControleren.get(i).getFgsv().trim(), "jan");
+                AddToCheckLine(lijstTeControleren.get(i).getId(), lijstTeControleren.get(i).getFgsv().trim(), "Allesandro Allesandro", lijstTeControleren.get(i).getLastUpdated());
             }
         }
+
+        SchermProperties();
     }
 
     // Functions
     // Auteur Dario
     // genereert een nieuwe regel dat gecontroleert moet worden
-    private void AddToCheckLine(int plantID, String plantnaam, String naamGebruiker)
+    private void AddToCheckLine(int plantID, String plantnaam, String naamGebruiker, Date lastUpdated)
     {
         Label linePlantnaam = new Label("Plant: " + plantnaam);
         Label lineNaamGebruiker = new Label("Aangepast door: " + naamGebruiker);
+        Label lineDatumToegevoed = new Label( "Datum: " + lastUpdated);
 
         linePlantnaam.setStyle("-fx-font: 14 system;");
         lineNaamGebruiker.setStyle("-fx-font: 14 system;");
+        lineDatumToegevoed.setStyle("-fx-font: 14 system;");
 
         Button bttnControleer = new Button("Controleer");
         bttnControleer.setId(Integer.toString(plantID));
@@ -109,6 +130,7 @@ public class ControllerControlerenEnGoedkeurenTransacties
 
         VBoxPlantNaam.getChildren().add(linePlantnaam);
         VBoxNaamGebruiker.getChildren().add(lineNaamGebruiker);
+        VBoxDatumToegevoegd.getChildren().add(lineDatumToegevoed);
         VBoxButtonsControleer.getChildren().add(bttnControleer);
     }
 
@@ -137,5 +159,16 @@ public class ControllerControlerenEnGoedkeurenTransacties
         Stage window = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
+    }
+
+    // Auteur Dario
+    // het zetten van de scherm properties zodat het mee transformeert met de window
+    private void SchermProperties()
+    {
+        AnchorPaneBase.setPrefHeight(ScrollPaneList.getHeight());
+        AnchorPaneBase.setPrefWidth(ScrollPaneList.getWidth());
+
+        TitledPaneMain.prefWidthProperty().bind(AnchorPaneBase.widthProperty());
+        TitledPaneMain.prefHeightProperty().bind(AnchorPaneBase.heightProperty());
     }
 }

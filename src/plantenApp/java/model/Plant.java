@@ -1,5 +1,7 @@
 package plantenApp.java.model;
 
+import java.util.Date;
+
 /**@author Siebe*/
 public class Plant {
     private int id;
@@ -12,8 +14,10 @@ public class Plant {
     private int maxPlantdichtheid;
     private String fgsv;
     private int status;
+    private Date lastUpdated;
+    private int gebruikerID;
 
-    public Plant(int id, String type, String familie, String geslacht, String soort, String variatie, int minPlantdichtheid, int maxPlantdichtheid,String fgsv, int status) {
+    public Plant(int id, String type, String familie, String geslacht, String soort, String variatie, int minPlantdichtheid, int maxPlantdichtheid,String fgsv, int status, Date lastUpdated, int gebruikerID) {
         this.id = id;
         this.type = type;
         this.familie = familie;
@@ -24,6 +28,8 @@ public class Plant {
         this.maxPlantdichtheid = maxPlantdichtheid;
         this.fgsv = fgsv;
         this.status = status;
+        this.lastUpdated = lastUpdated;
+        this.gebruikerID = gebruikerID;
     }
 
     public int getId() {
@@ -61,4 +67,8 @@ public class Plant {
     public String getFgsv(){return fgsv;}
 
     public int getStatus(){return status;}
+
+    public Date getLastUpdated(){return lastUpdated;}
+
+    public int getGebruikerID(){return gebruikerID;}
 }

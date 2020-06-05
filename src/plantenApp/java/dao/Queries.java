@@ -1,6 +1,17 @@
 package plantenApp.java.dao;
 
 public interface Queries {
+    /**
+     * @Author Bart
+     * de queries die gebruikt worden voor de gebruikerstabel
+     * @Author Jasper, Bart
+     * query SETWACHTWOORD_HASH
+     */
+    //region Gebruiker
+    String GETALLGEBRUIKERS = "SELECT * FROM gebruiker";
+    String GETGEBRUIKERBYEMAILADRES = "SELECT * FROM gebruiker WHERE email = ?";
+    //endregion
+
     //region GETBYID
 
     String GETPLANTBYSTATUS = "SELECT * FROM plant WHERE status = ?";
