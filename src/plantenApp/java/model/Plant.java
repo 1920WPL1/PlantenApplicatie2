@@ -1,6 +1,8 @@
 package plantenApp.java.model;
 
-/**@author Siebe*/
+/**
+ * @author Siebe
+ */
 public class Plant {
     private int id;
     private String type;
@@ -10,6 +12,8 @@ public class Plant {
     private String variatie;
     private int minPlantdichtheid;
     private int maxPlantdichtheid;
+    private String fgsv;
+    private int status;
     private AbiotischeFactoren abiotischeFactoren;
     private Beheer beheer;
     private Commensalisme commensalisme;
@@ -17,7 +21,7 @@ public class Plant {
     private Fenotype fenotype;
     private Foto foto;
 
-    public Plant(int id, String type, String familie, String geslacht, String soort, String variatie, int minPlantdichtheid, int maxPlantdichtheid) {
+    public Plant(int id, String type, String familie, String geslacht, String soort, String variatie, int minPlantdichtheid, int maxPlantdichtheid, String fgsv, int status) {
         this.id = id;
         this.type = type;
         this.familie = familie;
@@ -26,6 +30,8 @@ public class Plant {
         this.variatie = variatie;
         this.minPlantdichtheid = minPlantdichtheid;
         this.maxPlantdichtheid = maxPlantdichtheid;
+        this.fgsv = fgsv;
+        this.status = status;
     }
 
     public int getId() {
@@ -106,5 +112,13 @@ public class Plant {
 
     public void setFoto(Foto foto) {
         this.foto = foto;
+    }
+
+    public String getFgsv() {
+        return fgsv;
+    }
+
+    public int getStatus() {
+        return status;
     }
 }

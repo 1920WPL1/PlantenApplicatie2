@@ -39,8 +39,8 @@ public class ExtraDAO implements Queries {
                     rs.getString("eetbaar"),
                     rs.getString("kruidgebruik"),
                     rs.getString("geurend"),
-                    rs.getString("vorstgevoelig")
-            );
+                    rs.getString("vorstgevoelig"),
+                    rs.getString("vlindervriendelijk"));
         }
         return extra;
     }

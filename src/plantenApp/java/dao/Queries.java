@@ -1,6 +1,7 @@
 package plantenApp.java.dao;
 
 public interface Queries {
+    String GETPLANTBYSTATUS = "SELECT * FROM plant WHERE status = ?";
     //region GETBYID
     String GETPLANTBYID = "SELECT * FROM plant WHERE plant_id = ?";
 
@@ -13,7 +14,7 @@ public interface Queries {
     String GETCOMMENSALISMEBYPLANTID = "SELECT * FROM commensalisme WHERE plant_id = ?";
     String GETCOMMENSALISMEMULTIBYPLANTID = "SELECT * FROM commensalisme_multi WHERE plant_id = ?";
 
-    String GETBEHEERBYPLANTID = "SELECT * FROM beheer WHERE plant_id = ?";
+    String GETBEHEERBYPLANTID = "SELECT * FROM beheer_multi WHERE plant_id = ?";
 
     String GETEXTRABYPLANTID = "SELECT * FROM extra WHERE plant_id = ?";
 
