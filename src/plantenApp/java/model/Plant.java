@@ -12,6 +12,8 @@ public class Plant {
     private String variatie;
     private int minPlantdichtheid;
     private int maxPlantdichtheid;
+    private Date lastUpdated;
+    private int gebruikerID;
     private String fgsv;
     private int status;
     private AbiotischeFactoren abiotischeFactoren;
@@ -21,7 +23,7 @@ public class Plant {
     private Fenotype fenotype;
     private Foto foto;
 
-    public Plant(int id, String type, String familie, String geslacht, String soort, String variatie, int minPlantdichtheid, int maxPlantdichtheid, String fgsv, int status) {
+    public Plant(int id, String type, String familie, String geslacht, String soort, String variatie, int minPlantdichtheid, int maxPlantdichtheid,String fgsv, int status, Date lastUpdated, int gebruikerID) {
         this.id = id;
         this.type = type;
         this.familie = familie;
@@ -32,6 +34,8 @@ public class Plant {
         this.maxPlantdichtheid = maxPlantdichtheid;
         this.fgsv = fgsv;
         this.status = status;
+        this.lastUpdated = lastUpdated;
+        this.gebruikerID = gebruikerID;
     }
 
     public int getId() {
@@ -121,4 +125,6 @@ public class Plant {
     public int getStatus() {
         return status;
     }
+    public Date getLastUpdated(){return lastUpdated;}
+    public int getGebruikerID(){return gebruikerID;}
 }

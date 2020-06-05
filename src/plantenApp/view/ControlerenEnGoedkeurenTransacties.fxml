@@ -9,27 +9,27 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plantenApp.ControllerControlerenEnGoedkeurenTransacties">
+<AnchorPane fx:id="AnchorPaneBase" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plantenApp.ControllerControlerenEnGoedkeurenTransacties">
    <children>
-      <TitledPane animated="false" collapsible="false" text="Transactie beheer">
-         <content>
-            <AnchorPane>
+      <TitledPane fx:id="TitledPaneMain" animated="false" collapsible="false" text="Transactie beheer">
+        <content>
+          <AnchorPane fx:id="AnchorPaneList">
                <children>
-                  <VBox layoutX="14.0" layoutY="14.0" spacing="10.0">
+                  <VBox fx:id="Vbox" layoutX="14.0" layoutY="14.0" spacing="10.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                      <children>
                         <Button mnemonicParsing="false" onMouseClicked="#Clicked_terug" text="Terug">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <ScrollPane hbarPolicy="NEVER" maxHeight="500.0">
+                        <ScrollPane fx:id="ScrollPaneList">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                            <content>
                               <HBox fx:id="HBoxListToCheck">
                                  <children>
-                                    <VBox fx:id="VBoxPlantNaam" spacing="30.0">
+                                    <VBox fx:id="VBoxPlantNaam" fillWidth="false" spacing="30.0">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>
@@ -37,7 +37,7 @@
                                           <Insets right="20.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox fx:id="VBoxNaamGebruiker" spacing="30.0">
+                                    <VBox fx:id="VBoxNaamGebruiker" fillWidth="false" spacing="30.0">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>
@@ -45,7 +45,15 @@
                                           <Insets right="20.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox fx:id="VBoxButtonsControleer" layoutX="10.0" layoutY="10.0" spacing="20.0">
+                                    <VBox fx:id="VBoxDatumToegevoegd" fillWidth="false" spacing="30.0">
+                                       <padding>
+                                          <Insets right="20.0" top="5.0" />
+                                       </padding>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <VBox fx:id="VBoxButtonsControleer" fillWidth="false" spacing="20.0">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>
