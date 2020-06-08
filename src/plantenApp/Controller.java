@@ -104,18 +104,18 @@ public class Controller {
     private InfoTables infoTables;
     private Connection dbConnection;
 
-    public void initialize() throws SQLException {
+    public void initialize(Integer PlantId) throws SQLException {
         dbConnection = Database.getInstance().getConnection();
 
-        /*instellen exit, minimize en resize button*/
+        /*instellen exit, minimize en resize button
         ScreenControl();
 
-        /*infotabel object aanmaken*/
+        infotabel object aanmaken
         InfoTablesDAO infotablesDAO = new InfoTablesDAO(dbConnection);
         infoTables = infotablesDAO.getInfoTables();
 
-        /*comboboxes vullen*/
-        FillComboboxes(infoTables);
+        comboboxes vullen
+        FillComboboxes(infoTables);*/
 
 
     }

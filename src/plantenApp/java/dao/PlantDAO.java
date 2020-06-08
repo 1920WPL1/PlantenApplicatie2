@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**@author Siebe*/
+/**
+ * @author Siebe
+ */
 public class PlantDAO implements Queries {
 
     private Connection dbConnection;
@@ -26,15 +28,13 @@ public class PlantDAO implements Queries {
     }
 
     // Auteur Dario
-    public List<Plant> GetPlantIdByStatus(int status) throws SQLException
-    {
+    public List<Plant> GetPlantIdByStatus(int status) throws SQLException {
         List<Plant> lijstPlantId = new ArrayList<Plant>();
         Plant plant = null;
 
         stmtSelectByStatus.setInt(1, status);
         ResultSet rs = stmtSelectByStatus.executeQuery();
-        while (rs.next())
-        {
+        while (rs.next()) {
             plant = new Plant(
                     rs.getInt("plant_id"),
                     rs.getString("type"),
@@ -52,12 +52,14 @@ public class PlantDAO implements Queries {
             lijstPlantId.add(plant);
         }
 
-       return lijstPlantId;
+        return lijstPlantId;
     }
 
-    /**@author Siebe
+    /**
      * @param id -> plant_id
      * @return -> alle basis factoren van de specifieke plant
+     * @author Siebe
+     * @author Siebe
      */
     public Plant getPlantById(int id) throws SQLException {
         Plant plant = null;
@@ -82,31 +84,34 @@ public class PlantDAO implements Queries {
         return plant;
     }
 
-    /**@author Siebe
-     * @param type -> waarde type van de plant
+    /**
+     * @param type    -> waarde type van de plant
      * @param familie -> familie van de plant
-     * @param fgsv -> familie, geslacht, soort, variant
+     * @param fgsv    -> familie, geslacht, soort, variant
      * @return -> de gefilterde ids
+     * @author Siebe
      */
-    public ArrayList<Integer> KenmerkenFilter (String type, String familie, String fgsv) throws SQLException {
-        ArrayList<Integer> ids = new ArrayList<>();;
+    public ArrayList<Integer> KenmerkenFilter(String type, String familie, String fgsv) throws SQLException {
+        ArrayList<Integer> ids = new ArrayList<>();
+        ;
 
-        int iTrue = (type.isBlank())? 1:0;
-        stmtSelectByPlant.setString(1,type);
-        stmtSelectByPlant.setInt(2,iTrue);
+        int iTrue = (type.isBlank()) ? 1 : 0;
+        stmtSelectByPlant.setString(1, type);
+        stmtSelectByPlant.setInt(2, iTrue);
 
-        iTrue = (familie.isBlank())? 1:0;
-        stmtSelectByPlant.setString(3,type);
-        stmtSelectByPlant.setInt(4,iTrue);
+        iTrue = (familie.isBlank()) ? 1 : 0;
+        stmtSelectByPlant.setString(3, type);
+        stmtSelectByPlant.setInt(4, iTrue);
 
-        iTrue = (fgsv.isBlank())? 1:0;
-        stmtSelectByPlant.setString(5,type);
-        stmtSelectByPlant.setInt(6,iTrue);
+        iTrue = (fgsv.isBlank()) ? 1 : 0;
+        stmtSelectByPlant.setString(5, type);
+        stmtSelectByPlant.setInt(6, iTrue);
 
         ResultSet rs = stmtSelectByPlant.executeQuery();
-        while (rs.next()){
+        while (rs.next()) {
             ids.add(rs.getInt("plant_id"));
         }
         return ids;
     }
+    
 }

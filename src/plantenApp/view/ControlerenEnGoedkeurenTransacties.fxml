@@ -75,7 +75,7 @@
                   </VBox>
                </children>
             </AnchorPane>
-        </content>
+         </content>
       </TitledPane>
    </children>
 </AnchorPane>

@@ -12,7 +12,9 @@ public class Main extends Application {
     private double yOffset = 0;
     @Override
     public void start(Stage primaryStage) throws Exception{
+
         Parent root = FXMLLoader.load(getClass().getResource("view/ControlerenEnGoedkeurenTransacties.fxml"));
+
         primaryStage.setTitle("Planten applicatie");
         primaryStage.setScene(new Scene(root , 1000, 550));
         primaryStage.show();
