@@ -10,6 +10,9 @@ public interface Queries {
     //region Gebruiker
     String GETALLGEBRUIKERS = "SELECT * FROM gebruiker";
     String GETGEBRUIKERBYEMAILADRES = "SELECT * FROM gebruiker WHERE email = ?";
+
+    // Auteur Dario
+    String GETGEBRUIKERBYID = "SELECT * FROM gebruiker WHERE gebruiker_id = ?";
     //endregion
 
     //region GETBYID

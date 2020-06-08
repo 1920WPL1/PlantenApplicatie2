@@ -16,7 +16,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import plantenApp.java.dao.Database;
+import plantenApp.java.dao.GebruikerDAO;
 import plantenApp.java.dao.PlantDAO;
+import plantenApp.java.model.Gebruiker;
 import plantenApp.java.model.Plant;
 
 import javax.swing.*;
@@ -48,7 +50,10 @@ public class ControllerControlerenEnGoedkeurenTransacties
 
     // Variabelen
     public List<Plant> lijstTeControleren = new ArrayList<Plant>();
+    public Gebruiker gebruiker;
+
     PlantDAO plantDAO;
+    GebruikerDAO gebruikerDAO;
     Connection dbconnection;
 
     public AnchorPane AnchorPaneBase;
@@ -61,7 +66,7 @@ public class ControllerControlerenEnGoedkeurenTransacties
     public VBox VBoxButtonsControleer;
     public HBox HBoxListToCheck;
 
-    private final Status StatusToCheck = Status.inBewerking;
+    private final Status StatusToCheck = Status.teControleren;
 
     // Constructor
     public ControllerControlerenEnGoedkeurenTransacties() throws SQLException
@@ -75,6 +80,7 @@ public class ControllerControlerenEnGoedkeurenTransacties
         {
             dbconnection  = Database.getInstance().getConnection();
             plantDAO = new PlantDAO(dbconnection);
+            gebruikerDAO = new GebruikerDAO(dbconnection);
             lijstTeControleren = plantDAO.GetPlantIdByStatus(StatusToCheck.statusValue);
         }catch (Exception e)
         {
@@ -94,7 +100,8 @@ public class ControllerControlerenEnGoedkeurenTransacties
         {
             for(int i = 0 ; i < lijstTeControleren.size(); i++)
             {
-                AddToCheckLine(lijstTeControleren.get(i).getId(), lijstTeControleren.get(i).getFgsv().trim(), "Allesandro Allesandro", lijstTeControleren.get(i).getLastUpdated());
+                gebruiker = gebruikerDAO.getGebruikerById(lijstTeControleren.get(i).getGebruikerID());
+                AddToCheckLine(lijstTeControleren.get(i).getId(), lijstTeControleren.get(i).getFgsv().trim(), gebruiker.getVoornaam() + " " + gebruiker.getAchternaam(), lijstTeControleren.get(i).getLastUpdated());
             }
         }
 

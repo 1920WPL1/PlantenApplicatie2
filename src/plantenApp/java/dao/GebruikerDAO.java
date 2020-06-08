@@ -12,11 +12,14 @@ public class GebruikerDAO implements Queries {
     private Connection dbConnection;
     private PreparedStatement stmtSelectGebruikerByEmail;
     private PreparedStatement stmtSetWachtwoordHash;
+    private PreparedStatement stmtSelectById;
 
     public GebruikerDAO(Connection dbConnection) throws SQLException {
         this.dbConnection = dbConnection;
         stmtSelectGebruikerByEmail = dbConnection.prepareStatement(GETGEBRUIKERBYEMAILADRES);
         //stmtSetWachtwoordHash = dbConnection.prepareStatement(SETWACHTWOORDHASH);
+
+        stmtSelectById = dbConnection.prepareStatement(GETGEBRUIKERBYID);
     }
 
     /**@author Bart Maes
@@ -75,5 +78,27 @@ public class GebruikerDAO implements Queries {
             );
         }
         return user;
+    }
+
+    // Auteur Dario
+    public Gebruiker getGebruikerById(int id) throws SQLException {
+        Gebruiker gebruiker = null;
+
+        stmtSelectById.setInt(1, id);
+        ResultSet rs = stmtSelectById.executeQuery();
+        if (rs.next()) {
+            gebruiker = new Gebruiker(
+                    rs.getInt("gebruiker_id"),
+                    rs.getString("voornaam"),
+                    rs.getString("achternaam"),
+                    rs.getString("email"),
+                    rs.getString("rol"),
+                    rs.getDate("aanvraag_datum"),
+                    rs.getInt("aanvraag_goedgekeurd"),
+                    rs.getInt("geregistreerd"),
+                    rs.getBytes("wachtwoord_hash"),
+                    rs.getBytes("salt"));
+        }
+        return gebruiker;
     }
 }
