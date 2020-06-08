@@ -12,14 +12,14 @@ public class GebruikerDAO implements Queries {
     private Connection dbConnection;
     private PreparedStatement stmtSelectGebruikerByEmail;
     private PreparedStatement stmtSetWachtwoordHash;
-    private PreparedStatement stmtSelectById;
+    private PreparedStatement stmtSelectGebruikerById;
 
     public GebruikerDAO(Connection dbConnection) throws SQLException {
         this.dbConnection = dbConnection;
         stmtSelectGebruikerByEmail = dbConnection.prepareStatement(GETGEBRUIKERBYEMAILADRES);
         //stmtSetWachtwoordHash = dbConnection.prepareStatement(SETWACHTWOORDHASH);
 
-        stmtSelectById = dbConnection.prepareStatement(GETGEBRUIKERBYID);
+        stmtSelectGebruikerById = dbConnection.prepareStatement(GETGEBRUIKERBYID);
     }
 
     /**@author Bart Maes
@@ -84,8 +84,8 @@ public class GebruikerDAO implements Queries {
     public Gebruiker getGebruikerById(int id) throws SQLException {
         Gebruiker gebruiker = null;
 
-        stmtSelectById.setInt(1, id);
-        ResultSet rs = stmtSelectById.executeQuery();
+        stmtSelectGebruikerById.setInt(1, id);
+        ResultSet rs = stmtSelectGebruikerById.executeQuery();
         if (rs.next()) {
             gebruiker = new Gebruiker(
                     rs.getInt("gebruiker_id"),
