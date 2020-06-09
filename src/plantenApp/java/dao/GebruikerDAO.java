@@ -44,6 +44,7 @@ public class GebruikerDAO implements Queries {
                                 rs.getDate("aanvraag_datum"),
                                 rs.getInt("aanvraag_goedgekeurd"),
                                 rs.getInt("geregistreerd"),
+                                rs.getDate("last_login"),
                                 rs.getBytes("wachtwoord_hash"),
                                 rs.getBytes("salt")
                         );
@@ -73,6 +74,7 @@ public class GebruikerDAO implements Queries {
                     rs.getDate("aanvraag_datum"),
                     rs.getInt("aanvraag_goedgekeurd"),
                     rs.getInt("geregistreerd"),
+                    rs.getDate("last_login"),
                     rs.getBytes("wachtwoord_hash"),
                     rs.getBytes("salt")
             );
@@ -96,6 +98,7 @@ public class GebruikerDAO implements Queries {
                     rs.getDate("aanvraag_datum"),
                     rs.getInt("aanvraag_goedgekeurd"),
                     rs.getInt("geregistreerd"),
+                    rs.getDate("last_login"),
                     rs.getBytes("wachtwoord_hash"),
                     rs.getBytes("salt"));
         }

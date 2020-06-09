@@ -83,6 +83,7 @@ public class ControllerControlerenEnGoedkeurenTransacties {
             plantDAO = new PlantDAO(dbconnection);
             gebruikerDAO = new GebruikerDAO(dbconnection);
             lijstTeControleren.clear();
+
             lijstTeControleren = plantDAO.GetPlantIdByStatus(StatusToCheck.statusValue);
 
         } catch (Exception e) {
@@ -97,8 +98,8 @@ public class ControllerControlerenEnGoedkeurenTransacties {
             HBoxListToCheck.getChildren().add(temp);
         } else {
             for (int i = 0; i < lijstTeControleren.size(); i++) {
-                gebruiker = gebruikerDAO.getGebruikerById(lijstTeControleren.get(i).getGebruikerID());
-                AddToCheckLine(lijstTeControleren.get(i).getId(), lijstTeControleren.get(i).getFgsv().trim(), gebruiker.getVoornaam() + " " + gebruiker.getAchternaam(), lijstTeControleren.get(i).getLastUpdated());
+                gebruiker = gebruikerDAO.getGebruikerById(lijstTeControleren.get(i).getLaatste_update_door());
+                AddToCheckLine(lijstTeControleren.get(i).getId(), lijstTeControleren.get(i).getFgsv().trim(), gebruiker.getVoornaam() + " " + gebruiker.getAchternaam(), lijstTeControleren.get(i).getLaatste_update_datum());
             }
         }
         SchermProperties();

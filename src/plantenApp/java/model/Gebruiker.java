@@ -12,22 +12,24 @@ public class Gebruiker
     private String achternaam;
     private String email;
     private String rol;
-    private Date aanvraag_datum;
-    private int aanvraag_goedgekeurd;
+    private Date aanvraagdatum;
+    private int aanvraag_status;
     private int geregistreerd;
+    private Date last_login;
     private byte[] wachtwoord_hash;
     private byte[] salt;
 
-    public Gebruiker(int id, String voornaam, String achternaam, String email, String rol, Date aanvraag_datum, int aanvraag_goedgekeurd, int geregistreerd, byte[] wachtwoord_hash, byte[] salt)
+    public Gebruiker(int id, String voornaam, String achternaam, String email, String rol, Date aanvraag_datum, int aanvraag_goedgekeurd, int geregistreerd, Date last_login, byte[] wachtwoord_hash, byte[] salt)
     {
         this.id = id;
         this.voornaam = voornaam;
         this.achternaam = achternaam;
         this.email = email;
         this.rol = rol;
-        this.aanvraag_datum = aanvraag_datum;
-        this.aanvraag_goedgekeurd = aanvraag_goedgekeurd;
+        this.aanvraagdatum = aanvraag_datum;
+        this.aanvraag_status = aanvraag_goedgekeurd;
         this.geregistreerd = geregistreerd;
+        this.last_login = last_login;
         this.wachtwoord_hash = wachtwoord_hash;
         this.salt = salt;
     }
@@ -72,20 +74,20 @@ public class Gebruiker
         this.rol = rol;
     }
 
-    public Date getAanvraag_datum() {
-        return aanvraag_datum;
+    public Date getAanvraagdatum() {
+        return aanvraagdatum;
     }
 
-    public void setAanvraag_datum(Date aanvraag_datum) {
-        this.aanvraag_datum = aanvraag_datum;
+    public void setAanvraagdatum(Date aanvraagdatum) {
+        this.aanvraagdatum = aanvraagdatum;
     }
 
     public int isAanvraag_goedgekeurd() {
-        return aanvraag_goedgekeurd;
+        return aanvraag_status;
     }
 
-    public void setAanvraag_goedgekeurd(int aanvraag_goedgekeurd) {
-        this.aanvraag_goedgekeurd = aanvraag_goedgekeurd;
+    public void setAanvraag_status(int aanvraag_status) {
+        this.aanvraag_status = aanvraag_status;
     }
 
     public int isGeregistreerd() {
@@ -95,6 +97,10 @@ public class Gebruiker
     public void setGeregistreerd(int geregistreerd) {
         this.geregistreerd = geregistreerd;
     }
+
+    public Date getLast_login() { return last_login; }
+
+    public void setLast_login(Date last_login) { this.last_login = last_login; }
 
     public byte[] getWachtwoord_hash() {
         return wachtwoord_hash;

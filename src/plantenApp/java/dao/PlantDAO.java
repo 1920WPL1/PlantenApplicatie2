@@ -43,7 +43,7 @@ public class PlantDAO implements Queries {
         while (rs.next()) {
             plant = new Plant(
                     rs.getInt("plant_id"),
-                    rs.getString("type"),
+                    rs.getString("planttype"),
                     rs.getString("familie"),
                     rs.getString("geslacht"),
                     rs.getString("soort"),
@@ -52,8 +52,8 @@ public class PlantDAO implements Queries {
                     rs.getInt("plantdichtheid_max"),
                     rs.getString("fgsv"),
                     rs.getInt("status"),
-                    rs.getDate("last_updated"),
-                    rs.getInt("gebruiker_id"));
+                    rs.getDate("laatste_update_datum"),
+                    rs.getInt("laatste_update_door"));
 
             lijstPlantId.add(plant);
         }
@@ -83,7 +83,7 @@ public class PlantDAO implements Queries {
         if (rs.next()) {
             plant = new Plant(
                     rs.getInt("plant_id"),
-                    rs.getString("type"),
+                    rs.getString("planttype"),
                     rs.getString("familie"),
                     rs.getString("geslacht"),
                     rs.getString("soort"),
@@ -92,8 +92,8 @@ public class PlantDAO implements Queries {
                     rs.getInt("plantdichtheid_max"),
                     rs.getString("fgsv"),
                     rs.getInt("status"),
-                    rs.getDate("last_updated"),
-                    rs.getInt("gebruiker_id"));
+                    rs.getDate("laatste_update_datum"),
+                    rs.getInt("laatste_update_door"));
         }
         return plant;
     }
