@@ -45,7 +45,6 @@ public class GebruikerDAO implements Queries {
                                 rs.getInt("aanvraag_goedgekeurd"),
                                 rs.getDate("last_login"),
                                 rs.getInt("geregistreerd"),
-                                rs.getDate("last_login"),
                                 rs.getBytes("wachtwoord_hash"),
                                 rs.getBytes("salt")
                         );
@@ -77,13 +76,13 @@ public class GebruikerDAO implements Queries {
                     rs.getInt("aanvraag_goedgekeurd"),
                     rs.getDate("last_login"),
                     rs.getInt("geregistreerd"),
-                    rs.getDate("last_login"),
                     rs.getBytes("wachtwoord_hash"),
                     rs.getBytes("salt")
             );
         }
         return user;
     }
+
     public Gebruiker getGebruikerById(int gebruikerID) throws SQLException {
         Gebruiker user = null;
 

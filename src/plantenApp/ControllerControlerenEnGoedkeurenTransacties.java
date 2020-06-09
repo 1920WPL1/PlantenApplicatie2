@@ -98,7 +98,7 @@ public class ControllerControlerenEnGoedkeurenTransacties {
             HBoxListToCheck.getChildren().add(temp);
         } else {
             for (int i = 0; i < lijstTeControleren.size(); i++) {
-                gebruiker = gebruikerDAO.getGebruikerById(lijstTeControleren.get(i).getLaatste_update_door());
+                gebruiker = gebruikerDAO.getGebruikerById(lijstTeControleren.get(i).getLaatste_Update_Door());
                 AddToCheckLine(lijstTeControleren.get(i).getId(), lijstTeControleren.get(i).getFgsv().trim(), gebruiker.getVoornaam() + " " + gebruiker.getAchternaam(), lijstTeControleren.get(i).getLaatste_update_datum());
             }
         }

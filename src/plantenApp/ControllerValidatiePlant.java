@@ -226,26 +226,26 @@ public class ControllerValidatiePlant {
         Schermkiezen(mouseEvent, Scherm);
     }
 
-    public void Clicked_Ok(MouseEvent mouseEvent) throws IOException {
+    public void Clicked_Ok(MouseEvent mouseEvent) throws IOException, SQLException {
         Object[] options = {"OK", "CANCEL"};
         if (
                 JOptionPane.showOptionDialog(null, "You clicked OK, Click OK to continue", "Clicked OK",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
                         null, options, options[0]) == 0) {
-            plantDAO.setStatus(2,plant.getId());
+            plantDAO.setStatus(2, plant.getId());
             Schermkiezen(mouseEvent, "ControlerenEnGoedkeurenTransacties");
 
 
         }
     }
 
-    public void Clicked_NietOk(MouseEvent mouseEvent) throws IOException {
+    public void Clicked_NietOk(MouseEvent mouseEvent) throws IOException, SQLException {
         Object[] options = {"OK", "CANCEL"};
         if (
                 JOptionPane.showOptionDialog(null, "You clicked NIET OK, Click OK to continue", "Clicked Niet OK",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
                         null, options, options[0]) == 0) {
-            plantDAO.setStatus(0,plant.getId());
+            plantDAO.setStatus(0, plant.getId());
             Schermkiezen(mouseEvent, "ControlerenEnGoedkeurenTransacties");
 
 
@@ -466,7 +466,7 @@ public class ControllerValidatiePlant {
 
     private void StandaardInitialize() throws SQLException {
         try {
-            lblType.setText("" + plant.getPlanttype());
+            lblType.setText("" + plant.getType());
             lblFamilie.setText("" + plant.getFamilie());
             lblGeslacht.setText("" + plant.getGeslacht());
             lblSoort.setText("" + plant.getSoort());

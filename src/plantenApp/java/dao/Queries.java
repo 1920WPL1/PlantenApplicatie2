@@ -18,7 +18,6 @@ public interface Queries {
     //region GETBYID
     String SETPLANTSTATUS = "UPDATE plant SET status = ? WHERE plant_id = ?";
     String GETPLANTBYSTATUS = "SELECT * FROM plant WHERE status = ?";
-    String SETPLANTSTATUS = "UPDATE plant SET status = ? WHERE plant_id = ?";
 
 
     //region GETBYID
@@ -86,7 +85,7 @@ public interface Queries {
                     "WHERE " +
                     "plant_id IN ? " +
                     "AND " +
-                    "eigenschap = ? "+
+                    "eigenschap = ? " +
                     "AND " +
                     "waarde = ? OR 1=?";
 
@@ -103,7 +102,7 @@ public interface Queries {
                     "WHERE " +
                     "plant_id IN ? " +
                     "AND " +
-                    "eigenschap = ? "+
+                    "eigenschap = ? " +
                     "AND " +
                     "waarde = ? OR 1=?";
 
@@ -130,7 +129,7 @@ public interface Queries {
                     "WHERE " +
                     "plant_id IN ? " +
                     "AND " +
-                    "eigenschap = ? "+
+                    "eigenschap = ? " +
                     "AND " +
                     "jan = ? OR 1=?" +
                     "AND " +
@@ -160,7 +159,7 @@ public interface Queries {
                     "WHERE " +
                     "plant_id IN ? " +
                     "AND " +
-                    "beheerdaad = ? OR 1=? "+
+                    "beheerdaad = ? OR 1=? " +
                     "AND " +
                     "maand = ? OR 1=?" +
                     "AND " +
