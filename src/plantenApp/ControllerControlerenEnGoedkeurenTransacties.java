@@ -94,7 +94,7 @@ public class ControllerControlerenEnGoedkeurenTransacties
         {
             for(int i = 0 ; i < lijstTeControleren.size(); i++)
             {
-                AddToCheckLine(lijstTeControleren.get(i).getId(), lijstTeControleren.get(i).getFgsv().trim(), "Allesandro Allesandro", lijstTeControleren.get(i).getLastUpdated());
+                AddToCheckLine(lijstTeControleren.get(i).getId(), lijstTeControleren.get(i).getFgsv().trim(), "Allesandro Allesandro", lijstTeControleren.get(i).getLaatste_update_datum());
             }
         }
 

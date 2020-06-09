@@ -20,6 +20,7 @@ import plantenApp.java.model.Plant;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -190,9 +191,13 @@ public class ControllerValidatiePlant {
         BeheerInitialize();
         AbiotischeInitialize();
         CommensalismeInitialize();
+        ExtraInitialize();
+        FotoInitialize();
+        StandaardInitialize();
 
     }
-//Author : Leandro & Ayoub : Hier maken we connectie met alle dao's om de gegevens te halen.
+
+    //Author : Leandro & Ayoub : Hier maken we connectie met alle dao's om de gegevens te halen.
     private void DBInitialize() throws SQLException {
         //Fout-afhandeling indien er geen connectie kan gemaakt worden
         try {
@@ -224,23 +229,29 @@ public class ControllerValidatiePlant {
         Schermkiezen(mouseEvent, Scherm);
     }
 
-    public void Clicked_Ok(MouseEvent mouseEvent) throws IOException {
+    public void Clicked_Ok(MouseEvent mouseEvent) throws IOException, SQLException {
         Object[] options = {"OK", "CANCEL"};
         if (
                 JOptionPane.showOptionDialog(null, "You clicked OK, Click OK to continue", "Clicked OK",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
                         null, options, options[0]) == 0) {
+            plantDAO.setStatus(2,plant.getId());
             Schermkiezen(mouseEvent, "ControlerenEnGoedkeurenTransacties");
+
+
         }
     }
 
-    public void Clicked_NietOk(MouseEvent mouseEvent) throws IOException {
+    public void Clicked_NietOk(MouseEvent mouseEvent) throws IOException, SQLException {
         Object[] options = {"OK", "CANCEL"};
         if (
                 JOptionPane.showOptionDialog(null, "You clicked NIET OK, Click OK to continue", "Clicked Niet OK",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
                         null, options, options[0]) == 0) {
+            plantDAO.setStatus(0,plant.getId());
             Schermkiezen(mouseEvent, "ControlerenEnGoedkeurenTransacties");
+
+
         }
     }
 
@@ -332,7 +343,6 @@ public class ControllerValidatiePlant {
 
     }
 
-
     private void AbiotischeInitialize() throws SQLException {
         try {
             plant.setAbiotischeFactoren(abiotischeFactorenDAO.getById(plant.getId()));
@@ -342,13 +352,14 @@ public class ControllerValidatiePlant {
             lblReactie.setText("" + plant.getAbiotischeFactoren().getReactieAntagonistischeOmgeving());
             lblGrondsoort.setText("" + plant.getAbiotischeFactoren().getGrondsoort());
 
-                for (int i = 0; i < plant.getAbiotischeFactoren().getMultiEigenschappen().size(); i++) {
-                    System.out.println("1" + plant.getAbiotischeFactoren().getMultiEigenschappen().get(i).getValue());
-                    System.out.println("2" + infoTablesDAO.getInfoTables().getHabitats().get(3));
-                    System.out.println("3" + plant.getAbiotischeFactoren().getMultiEigenschappen().get(4).getValue());
-                    lblHabitat.setText(lblHabitat.getText() + "\n" + plant.getAbiotischeFactoren().getMultiEigenschappen().get(i).getValue());
+            for (int i = 0; i < plant.getAbiotischeFactoren().getMultiEigenschappen().size(); i++) {
+                System.out.println("1" + plant.getAbiotischeFactoren().getMultiEigenschappen().get(i).getValue());
+                System.out.println("2" + infoTablesDAO.getInfoTables().getHabitats().get(3));
+                System.out.println("3" + plant.getAbiotischeFactoren().getMultiEigenschappen().get(4).getValue());
+                lblHabitat.setText(lblHabitat.getText() + "\n" + plant.getAbiotischeFactoren().getMultiEigenschappen().get(i).getValue());
 
-        }} catch (NullPointerException ne) {
+            }
+        } catch (NullPointerException ne) {
             lblBezonning.setText("Oops er liep iets mis met ophalen van gegevens");
         }
     }
@@ -382,6 +393,8 @@ public class ControllerValidatiePlant {
                 case "november":
                     cbxNov1.setSelected(true);
                 case "december":
+                    cbxDec1.setSelected(true);
+                case "test":
                     cbxDec1.setSelected(true);
             }
 
@@ -441,15 +454,17 @@ public class ControllerValidatiePlant {
     }
 
     private void FotoInitialize() throws SQLException {
-        try {
-            plant.setFoto(fotoDAO.getFotoById(101));
-            imgHabitus.setImage((Image) infoTablesDAO.getInfoTables().getHabitusFotos().get(Integer.parseInt(plant.getFenotype().getHabitus())));
-            imgBlad.setImage((Image) plant.getFoto().getFotos().get(0).getImage());
-            imgBloei.setImage((Image) plant.getFoto().getFotos().get(1).getImage());
+        //try {
+        //plant.setFoto(fotoDAO.getFotoById(plant.getId()));
+        //imgHabitus.setImage((Image) infoTablesDAO.getInfoTables().getHabitusFotos().get(Integer.parseInt(plant.getFenotype().getHabitus())));
+//        imgHabitus.setImage((Image) infoTablesDAO.getInfoTables().getHabitusFotos().get(1));
+        //imgBlad.setImage((Image) plant.getFoto().getFotos().get(0).getImage());
+        //imgBloei.setImage((Image) plant.getFoto().getFotos().get(1).getImage());
 
-        } catch (NullPointerException npe) {
-            System.out.println("Geen foto");
-        }
+        //} catch (NullPointerException npe) {
+
+        //System.out.println("Geen foto");
+        //}
     }
 
     private void StandaardInitialize() throws SQLException {

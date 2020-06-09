@@ -10,10 +10,11 @@ public interface Queries {
     //region Gebruiker
     String GETALLGEBRUIKERS = "SELECT * FROM gebruiker";
     String GETGEBRUIKERBYEMAILADRES = "SELECT * FROM gebruiker WHERE email = ?";
+    String GETGEBRUIKERBYID = "SELECT * FROM gebruiker WHERE gebruiker_id = ?";
     //endregion
 
     //region GETBYID
-
+    String SETPLANTSTATUS = "UPDATE plant SET status = ? WHERE plant_id = ?";
     String GETPLANTBYSTATUS = "SELECT * FROM plant WHERE status = ?";
     String GETPLANTBYID = "SELECT * FROM plant WHERE plant_id = ?";
 
@@ -36,7 +37,7 @@ public interface Queries {
     //region GETIDBYKENMERKEN
     String GETIDSBYPLANT =
             "SELECT plant_id FROM plant WHERE " +
-                    "type = ? OR  1=? " +
+                    "planttype = ? OR  1=? " +
                     "AND " +
                     "familie = ? OR 1=?" +
                     "AND " +
@@ -163,7 +164,7 @@ public interface Queries {
     //region NAAKTETABELLEN
 
     String NTTYPE =
-            "SELECT type_naam FROM type";
+            "SELECT type_naam FROM planttype";
 
     String NTFAMILIE =
             "SELECT familie_naam FROM familie";

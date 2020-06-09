@@ -7,15 +7,15 @@ import java.util.Date;
  */
 public class Plant {
     private int id;
-    private String type;
+    private String planttype;
     private String familie;
     private String geslacht;
     private String soort;
     private String variatie;
     private int minPlantdichtheid;
     private int maxPlantdichtheid;
-    private Date lastUpdated;
-    private int gebruikerID;
+    private Date laatste_update_datum;
+    private int laatste_update_door;
     private String fgsv;
     private int status;
     private AbiotischeFactoren abiotischeFactoren;
@@ -25,9 +25,9 @@ public class Plant {
     private Fenotype fenotype;
     private Foto foto;
 
-    public Plant(int id, String type, String familie, String geslacht, String soort, String variatie, int minPlantdichtheid, int maxPlantdichtheid,String fgsv, int status, Date lastUpdated, int gebruikerID) {
+    public Plant(int id, String type, String familie, String geslacht, String soort, String variatie, int minPlantdichtheid, int maxPlantdichtheid, String fgsv, int status, Date laatste_update_datum, int gebruikerID) {
         this.id = id;
-        this.type = type;
+        this.planttype = type;
         this.familie = familie;
         this.geslacht = geslacht;
         this.soort = soort;
@@ -36,8 +36,8 @@ public class Plant {
         this.maxPlantdichtheid = maxPlantdichtheid;
         this.fgsv = fgsv;
         this.status = status;
-        this.lastUpdated = lastUpdated;
-        this.gebruikerID = gebruikerID;
+        this.laatste_update_datum = laatste_update_datum;
+        this.laatste_update_door = gebruikerID;
     }
 
     public int getId() {
@@ -45,7 +45,7 @@ public class Plant {
     }
 
     public String getType() {
-        return type;
+        return planttype;
     }
 
     public String getFamilie() {
@@ -127,6 +127,11 @@ public class Plant {
     public int getStatus() {
         return status;
     }
-    public Date getLastUpdated(){return lastUpdated;}
-    public int getGebruikerID(){return gebruikerID;}
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public Date getLaatste_update_datum(){return laatste_update_datum;}
+    public int getLaatste_Update_Door(){return laatste_update_door;}
 }
