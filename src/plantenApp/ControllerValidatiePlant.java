@@ -4,10 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -229,7 +226,7 @@ public class ControllerValidatiePlant {
         Schermkiezen(mouseEvent, Scherm);
     }
 
-    public void Clicked_Ok(MouseEvent mouseEvent) throws IOException, SQLException {
+    public void Clicked_Ok(MouseEvent mouseEvent) throws IOException {
         Object[] options = {"OK", "CANCEL"};
         if (
                 JOptionPane.showOptionDialog(null, "You clicked OK, Click OK to continue", "Clicked OK",
@@ -242,7 +239,7 @@ public class ControllerValidatiePlant {
         }
     }
 
-    public void Clicked_NietOk(MouseEvent mouseEvent) throws IOException, SQLException {
+    public void Clicked_NietOk(MouseEvent mouseEvent) throws IOException {
         Object[] options = {"OK", "CANCEL"};
         if (
                 JOptionPane.showOptionDialog(null, "You clicked NIET OK, Click OK to continue", "Clicked Niet OK",
@@ -469,7 +466,7 @@ public class ControllerValidatiePlant {
 
     private void StandaardInitialize() throws SQLException {
         try {
-            lblType.setText("" + plant.getType());
+            lblType.setText("" + plant.getPlanttype());
             lblFamilie.setText("" + plant.getFamilie());
             lblGeslacht.setText("" + plant.getGeslacht());
             lblSoort.setText("" + plant.getSoort());
@@ -486,7 +483,6 @@ public class ControllerValidatiePlant {
         ScrollPane.prefHeightProperty().bind(Anchorpane.heightProperty());
 
     }
-
 
 }
 

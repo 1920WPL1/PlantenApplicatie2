@@ -16,6 +16,7 @@ public class Gebruiker
     private int aanvraag_status;
     private Date last_login;
     private int geregistreerd;
+    private Date last_login;
     private byte[] wachtwoord_hash;
     private byte[] salt;
 
@@ -29,6 +30,7 @@ public class Gebruiker
         this.aanvraag_status = aanvraag_status;
         this.last_login = last_login;
         this.geregistreerd = geregistreerd;
+        this.last_login = last_login;
         this.wachtwoord_hash = wachtwoord_hash;
         this.salt = salt;
     }
@@ -104,6 +106,10 @@ public class Gebruiker
     public void setGeregistreerd(int geregistreerd) {
         this.geregistreerd = geregistreerd;
     }
+
+    public Date getLast_login() { return last_login; }
+
+    public void setLast_login(Date last_login) { this.last_login = last_login; }
 
     public byte[] getWachtwoord_hash() {
         return wachtwoord_hash;
