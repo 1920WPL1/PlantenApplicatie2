@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,12 +18,15 @@ public class PlantDAO implements Queries {
     private PreparedStatement stmtSelectById;
     private PreparedStatement stmtSelectByPlant;
     private PreparedStatement stmtSelectByStatus;
+    private PreparedStatement stmtSelectByLaatsteUpdateDoor;
 
     public PlantDAO(Connection dbConnection) throws SQLException {
         this.dbConnection = dbConnection;
         stmtSelectById = dbConnection.prepareStatement(GETPLANTBYID);
         stmtSelectByPlant = dbConnection.prepareStatement(GETIDSBYPLANT);
         stmtSelectByStatus = dbConnection.prepareStatement(GETPLANTBYSTATUS);
+        stmtSelectByLaatsteUpdateDoor = dbConnection.prepareStatement(GETPLANTBYLAATSTE_UPDATE_DOOR);
+
     }
 
     // Auteur Dario
@@ -37,7 +39,7 @@ public class PlantDAO implements Queries {
         while (rs.next()) {
             plant = new Plant(
                     rs.getInt("plant_id"),
-                    rs.getString("type"),
+                    rs.getString("planttype"),
                     rs.getString("familie"),
                     rs.getString("geslacht"),
                     rs.getString("soort"),
@@ -46,8 +48,8 @@ public class PlantDAO implements Queries {
                     rs.getInt("plantdichtheid_max"),
                     rs.getString("fgsv"),
                     rs.getInt("status"),
-                    rs.getDate("last_updated"),
-                    rs.getInt("gebruiker_id"));
+                    rs.getDate("laatste_update_datum"),
+                    rs.getInt("laatste_update_door"));
 
             lijstPlantId.add(plant);
         }
@@ -69,7 +71,7 @@ public class PlantDAO implements Queries {
         if (rs.next()) {
             plant = new Plant(
                     rs.getInt("plant_id"),
-                    rs.getString("type"),
+                    rs.getString("planttype"),
                     rs.getString("familie"),
                     rs.getString("geslacht"),
                     rs.getString("soort"),
@@ -78,10 +80,33 @@ public class PlantDAO implements Queries {
                     rs.getInt("plantdichtheid_max"),
                     rs.getString("fgsv"),
                     rs.getInt("status"),
-                    rs.getDate("last_updated"),
-                    rs.getInt("gebruiker_id"));
+                    rs.getDate("laatste_update_datum"),
+                    rs.getInt("laatste_update_door"));
         }
         return plant;
+    }
+//AUthor : Leandro
+    public List<Plant> Getplantbylaatstupdatedoor(Integer id) throws SQLException {
+        List<Plant> planten = new ArrayList<>();
+        stmtSelectByLaatsteUpdateDoor.setInt(1, id);
+        ResultSet rs = stmtSelectByLaatsteUpdateDoor.executeQuery();
+        if (rs.next()) {
+            planten.add(new Plant(
+                    rs.getInt("plant_id"),
+                    rs.getString("planttype"),
+                    rs.getString("familie"),
+                    rs.getString("geslacht"),
+                    rs.getString("soort"),
+                    rs.getString("variatie"),
+                    rs.getInt("plantdichtheid_min"),
+                    rs.getInt("plantdichtheid_max"),
+                    rs.getString("fgsv"),
+                    rs.getInt("status"),
+                    rs.getDate("laatste_update_datum"),
+                    rs.getInt("laatste_update_door")));
+        }
+
+        return planten;
     }
 
     /**
@@ -113,5 +138,5 @@ public class PlantDAO implements Queries {
         }
         return ids;
     }
-    
+
 }

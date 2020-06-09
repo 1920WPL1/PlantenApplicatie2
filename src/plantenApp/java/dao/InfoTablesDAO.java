@@ -1,33 +1,42 @@
 package plantenApp.java.dao;
 
+import javafx.scene.image.Image;
 import plantenApp.java.model.InfoTables;
 
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**@author Siebe*/
+/**
+ * @author Siebe
+ */
 public class InfoTablesDAO implements Queries {
     private Connection dbConnection;
+    private PreparedStatement stmtGetHabitusById;
 
     public InfoTablesDAO(Connection dbConnection) throws SQLException {
         this.dbConnection = dbConnection;
+
     }
 
     /**
      * @param Query
      * @return
      */
-    public ArrayList<String> getInfoTableString(String Query, String eigenschapnaam) throws SQLException{
-        ArrayList<String> strings = new ArrayList<>();;
+    public ArrayList<String> getInfoTableString(String Query, String eigenschapnaam) throws SQLException {
+        ArrayList<String> strings = new ArrayList<>();
+        ;
 
-            Statement stmt = dbConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Query);
-            while (rs.next()) {
-                strings.add(rs.getString(eigenschapnaam));
+        Statement stmt = dbConnection.createStatement();
+        ResultSet rs = stmt.executeQuery(Query);
+        while (rs.next()) {
+            strings.add(rs.getString(eigenschapnaam));
 
 
-            }
-       // System.out.println(strings.toString());
+        }
+        // System.out.println(strings.toString());
         return strings;
     }
 
@@ -36,7 +45,8 @@ public class InfoTablesDAO implements Queries {
      * @return
      */
     public ArrayList<Integer> getInfoTableInt(String Query, String eigenschapnaam) throws SQLException {
-        ArrayList<Integer> ints = new ArrayList<>();;
+        ArrayList<Integer> ints = new ArrayList<>();
+        ;
 
         Statement stmt = dbConnection.createStatement();
         ResultSet rs = stmt.executeQuery(Query);
@@ -50,7 +60,7 @@ public class InfoTablesDAO implements Queries {
      * @param Query
      * @return
      */
-    public ArrayList<Blob> getInfoTableBlob(String Query,String eigenschapnaam) throws SQLException {
+    public ArrayList<Blob> getInfoTableBlob(String Query, String eigenschapnaam) throws SQLException {
         ArrayList<Blob> blobs = new ArrayList<>();
 
         Statement stmt = dbConnection.createStatement();
@@ -60,9 +70,24 @@ public class InfoTablesDAO implements Queries {
         }
         return blobs;
     }
+//Author Leandro
+    public javafx.scene.image.Image getInfoTableBlobHabitus(String Habitus) throws SQLException, IOException {
+        InputStream is = null;
+        Image img;
+        Blob blob = null;
+        stmtGetHabitusById = dbConnection.prepareStatement(GETHABITUSFOTOBYWAARDE);
+        stmtGetHabitusById.setString(1, Habitus);
+        ResultSet rs = stmtGetHabitusById.executeQuery();
+        while (rs.next()) {
+            blob = rs.getBlob(1);
+        }
+        is = blob.getBinaryStream();
+        img =  new Image(is);
+        return img;
+    }
 
     // functie om de String Query in te vullen bij 'getInfoTable'
-  public InfoTables getInfoTables() throws SQLException{
+    public InfoTables getInfoTables() throws SQLException {
         InfoTables infoTables = new InfoTables(
                 getInfoTableString(NTTYPE, "type_naam"),
                 getInfoTableString(NTFAMILIE, "familie_naam"),
@@ -86,7 +111,7 @@ public class InfoTablesDAO implements Queries {
                 getInfoTableString(NTLEVENSDUURCONCURRENTIEKRACHT, "waarde"),
                 getInfoTableInt(NTSOCIABILITEIT, "waarde"),
                 getInfoTableString(NTSTRATEGIE, "waarde"),
-                getInfoTableString(NTBEHEERDAAD,"waarde"),
+                getInfoTableString(NTBEHEERDAAD, "waarde"),
                 getInfoTableInt(NTNECTARWAARDE, "waarde"),
                 getInfoTableInt(NTPOLLENWAARDE, "waarde")
         );

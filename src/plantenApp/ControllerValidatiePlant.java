@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -89,9 +88,7 @@ public class ControllerValidatiePlant {
     public Label lblBloeiKlrDec;
     public Label lblBldGrootte;
     public Label lblBehandeling1;
-    public Label lblBehandeling2;
     public Label lblFrequentie1;
-    public Label lblFrequentie2;
     public CheckBox cbxJan1;
     public CheckBox cbxFeb1;
     public CheckBox cbxMaa1;
@@ -104,22 +101,7 @@ public class ControllerValidatiePlant {
     public CheckBox cbxOkt1;
     public CheckBox cbxNov1;
     public CheckBox cbxDec1;
-    public CheckBox cbxJan2;
-    public CheckBox cbxFeb2;
-    public CheckBox cbxMaa2;
-    public CheckBox cbxApr2;
-    public CheckBox cbxMei2;
-    public CheckBox cbxJun2;
-    public CheckBox cbxJul2;
-    public CheckBox cbxAug2;
-    public CheckBox cbxSep2;
-    public CheckBox cbxOkt2;
-    public CheckBox cbxNov2;
-    public CheckBox cbxDec2;
-    public Label lblXValue;
-    public Label lblYValue;
     public Label lblType;
-    public Label lblValue;
     public Label lblGeslacht;
     public Label lblSoort;
     public Label lblVariant;
@@ -131,18 +113,13 @@ public class ControllerValidatiePlant {
     public CheckBox cbxSoc5;
     public Label lblStrategie;
     public Label lblLevensduur;
-    public Slider sldrBezonning;
     public Label lblBezonning;
-    public Slider sldrVochtBehoefte;
     public Label lblVochtBehoefte;
-    public Slider sldrVoedingsbehoefte;
     public Label lblVoedingsbehoefte;
     public Label lblReactie;
     public Label lblGrondsoort;
     public Label lblHabitat;
-    public Slider sldrNectarwaarde;
     public Label lblNectarwaarde;
-    public Slider sldrPollenwaarde;
     public Label lblPollenwaarde;
     public Label lblBijvriendelijk;
     public Label lblVlindervriendelijk;
@@ -176,9 +153,11 @@ public class ControllerValidatiePlant {
     public InfoTablesDAO infoTablesDAO;
     public ExtraDAO extraDAO;
     public FenoMulti_Eigenschap MultiFenoBldHgte;
-    public FenoMulti_Eigenschap MultiFenoBloeiHgte;
+    public FenoMulti_Eigenschap MultiFenoBloeiminHgte;
     public FenoMulti_Eigenschap MultiFenoBldkleur;
     public FenoMulti_Eigenschap MultiFenoBloeikleur;
+    public FenoMulti_Eigenschap MultiFenoBloeimaxHgte;
+    public Label blMinBloeihoogteSept;
     Connection dbConnection;
 
     //Author : Leandro , Een Parameter Plantid toegevoegd om de Waarde van ControlerenEnGoedkeurenTransacties Scherm  te onthouden
@@ -190,9 +169,13 @@ public class ControllerValidatiePlant {
         BeheerInitialize();
         AbiotischeInitialize();
         CommensalismeInitialize();
+        FotoInitialize();
+        SchermInitialize();
+        StandaardInitialize();
 
     }
-//Author : Leandro & Ayoub : Hier maken we connectie met alle dao's om de gegevens te halen.
+
+    //Author : Leandro & Ayoub : Hier maken we connectie met alle dao's om de gegevens te halen.
     private void DBInitialize() throws SQLException {
         //Fout-afhandeling indien er geen connectie kan gemaakt worden
         try {
@@ -213,73 +196,89 @@ public class ControllerValidatiePlant {
 
     }
 
+    //Author : Leandro
     public void Clicked_Wijzig(MouseEvent mouseEvent) throws IOException, SQLException {
+        //Scherm benaming meegeven in de methode om naar het scherm te gaan
         Scherm = "PlantWijzigen";
         Schermkiezen(mouseEvent, Scherm, plant.getId());
 
     }
 
+    //Author : Leandro
     public void Clicked_Terug(MouseEvent mouseEvent) throws IOException {
+        //Scherm benaming meegeven in de methode om naar het scherm te gaan
         Scherm = "ControlerenEnGoedkeurenTransacties";
         Schermkiezen(mouseEvent, Scherm);
     }
 
+    //Author : Ayoub
     public void Clicked_Ok(MouseEvent mouseEvent) throws IOException {
+        // Hier sla ik de opties op om ze als variabel te gebruiken
         Object[] options = {"OK", "CANCEL"};
-        if (
-                JOptionPane.showOptionDialog(null, "You clicked OK, Click OK to continue", "Clicked OK",
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
-                        null, options, options[0]) == 0) {
+        //Hier controleer ik of ze effectief bevestigen of niet voor ik de data wegschrijf naar Database
+        if (JOptionPane.showOptionDialog(null, "You clicked OK, Click OK to continue", "Clicked OK",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+                null, options, options[0]) == 0) {
             Schermkiezen(mouseEvent, "ControlerenEnGoedkeurenTransacties");
         }
     }
 
+    //Author : Ayoub
     public void Clicked_NietOk(MouseEvent mouseEvent) throws IOException {
+        // Hier sla ik de opties op om ze als variabel te gebruiken
         Object[] options = {"OK", "CANCEL"};
-        if (
-                JOptionPane.showOptionDialog(null, "You clicked NIET OK, Click OK to continue", "Clicked Niet OK",
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
-                        null, options, options[0]) == 0) {
+        //Hier controleer ik of ze effectief bevestigen of niet voor ik de data wegschrijf naar Database
+        if (JOptionPane.showOptionDialog(null, "You clicked NIET OK, Click OK to continue", "Clicked Niet OK",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+                null, options, options[0]) == 0) {
             Schermkiezen(mouseEvent, "ControlerenEnGoedkeurenTransacties");
         }
     }
 
+    //Author : Leandro -> methode om te switchen van scherm
     public void Schermkiezen(MouseEvent mouseEvent, String scherm) throws IOException {
+        //Hier vang ik de verwijzing op indien ze  een scherm meegeven die niet bestaat
         try {
-
+            //Hier zet ik de root naar het gewenste scherm
             Parent root = FXMLLoader.load(getClass().getResource("view/" + scherm + ".fxml"));
             Scene scene = new Scene(root);
+            //Hier link ik een event (bijvoorbeeld button) aan zodat het scherm open gaat bij het event
             Stage window = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             window.setScene(scene);
+            //Scherm tonen
             window.show();
         } catch (NullPointerException ne) {
             JOptionPane.showMessageDialog(null, "Scherm niet gevonden");
         }
     }
 
+    //Author : Leandro -> methode schermkiezen overloaded met extra parameter Int Plantid
     public void Schermkiezen(MouseEvent mouseEvent, String scherm, Integer PlantId) throws IOException, SQLException {
+        //Hier vang ik de verwijzing op indien ze  een scherm meegeven die niet bestaat
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("view/" + scherm + ".fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
+            //Hier link ik een event (bijvoorbeeld button) aan zodat het scherm open gaat bij het event
             Stage window = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-            Controller controller = loader.getController();
+            //Controller Aanvragen van Scherm (deze is gelinkt in schermxml) --> KLasse Controller nog aanpassen naar correcte controller volgens scherm.
+            Controller controller = loader.getController(); // -->
+            //hier de Methode initialize aan gesproken en parameter meegegeven. --> Indien de methode anders gebruik word moet deze hier ook aangepast worden.
             controller.initialize(PlantId);
             window.setScene(scene);
+            //Scherm tonen
             window.show();
         } catch (NullPointerException ne) {
             JOptionPane.showMessageDialog(null, "Het gevraagde scherm is niet gevonden");
         }
     }
 
+    //Author : Leandro -> alle Fenotype gegevens gelinkt aan de plant weergeven in het scherm
     private void FenoInitialize() throws SQLException {
         try {
+            //Hier vul ik alle veriabelen op met de Gegevens uit de DB en zet ik alle fenotype data in de plant
             plant.setFenotype(fenotypeDAO.getById(plant.getId()));
             Fenotype PlantFeno = plant.getFenotype();
-            MultiFenoBldHgte = PlantFeno.getMultiEigenschappen().get(0);
-            MultiFenoBloeiHgte = PlantFeno.getMultiEigenschappen().get(1);
-            MultiFenoBldkleur = PlantFeno.getMultiEigenschappen().get(2);
-            MultiFenoBloeikleur = PlantFeno.getMultiEigenschappen().get(3);
             lblBldGrootte.setText("" + PlantFeno.getBladgrootte());
             lblBldVrm.setText(PlantFeno.getBladvorm());
             lblRatio.setText(PlantFeno.getRatio_bloei_blad());
@@ -287,6 +286,16 @@ public class ControllerValidatiePlant {
             lblRaunkhiaer.setText(PlantFeno.getLevensvorm());
             lblHabitus.setText(PlantFeno.getHabitus());
             lblBloeiwijze.setText(PlantFeno.getBloeiwijze());
+
+            //Variabelen gemaakt zodanig dat het overzichteljk blijft en geen ellenlange code + copy past moet gebeuren
+            MultiFenoBldHgte = PlantFeno.getMultiEigenschappen().get(0); //Bladhoogte
+            MultiFenoBloeiminHgte = PlantFeno.getMultiEigenschappen().get(1); //min-Bloeihoogte
+            MultiFenoBloeimaxHgte = PlantFeno.getMultiEigenschappen().get(2); //max-Bloeihoogte
+            MultiFenoBldkleur = PlantFeno.getMultiEigenschappen().get(3); //Bladkleur
+            MultiFenoBloeikleur = PlantFeno.getMultiEigenschappen().get(4); //Bloeikleur
+            System.out.println(PlantFeno.getMultiEigenschappen().get(2).getNaam());
+
+            //Deze werkt per maand de Max-Bladhoogte. variabel gebruikt om het overzichtelijk te houden
             blMxBladhoogteJan.setText(MultiFenoBldHgte.getJan());
             blMxBladhoogteFeb.setText(MultiFenoBldHgte.getFeb());
             blMxBladhoogteMaa.setText(MultiFenoBldHgte.getMaa());
@@ -300,6 +309,7 @@ public class ControllerValidatiePlant {
             blMxBladhoogteNov.setText(MultiFenoBldHgte.getNov());
             blMxBladhoogteDec.setText(MultiFenoBldHgte.getDec());
 
+            //Deze werkt per maand de BLadkleur. variabel gebruikt om het overzichtelijk te houden
             lblBladKlrJan.setText(MultiFenoBldkleur.getJan());
             lblBladKlrFeb.setText(MultiFenoBldkleur.getFeb());
             lblBladKlrMaa.setText(MultiFenoBldkleur.getMaa());
@@ -313,7 +323,7 @@ public class ControllerValidatiePlant {
             lblBladKlrNov.setText(MultiFenoBldkleur.getNov());
             lblBladKlrDec.setText(MultiFenoBldkleur.getDec());
 
-
+            //Deze werkt per maand de Bloeikleur. variabel gebruikt om het overzichtelijk te houden
             lblBloeiKlrJan.setText(MultiFenoBloeikleur.getJan());
             lblBloeiKlrFeb.setText(MultiFenoBloeikleur.getFeb());
             lblBloeiKlrMaa.setText(MultiFenoBloeikleur.getMaa());
@@ -326,14 +336,37 @@ public class ControllerValidatiePlant {
             lblBloeiKlrOkt.setText(MultiFenoBloeikleur.getOkt());
             lblBloeiKlrNov.setText(MultiFenoBloeikleur.getNov());
             lblBloeiKlrDec.setText(MultiFenoBloeikleur.getDec());
-        } catch (Exception ex) {
-            lblBldGrootte.setText("Oops Er liep iets fout met de verbinding");
+
+            //Deze lijst is voor Maxbloeihoogte
+            blMinBloeihoogteJan.setText(MultiFenoBloeiminHgte.getJan());
+            blMinBloeihoogteFeb.setText(MultiFenoBloeiminHgte.getFeb());
+            blMinBloeihoogteMaa.setText(MultiFenoBloeiminHgte.getMaa());
+            blMinBloeihoogteApr.setText(MultiFenoBloeiminHgte.getApr());
+            blMinBloeihoogteMei.setText(MultiFenoBloeiminHgte.getMei());
+            blMinBloeihoogteJun.setText(MultiFenoBloeiminHgte.getJun());
+            blMinBloeihoogteJul.setText(MultiFenoBloeiminHgte.getJul());
+            blMinBloeihoogteAug.setText(MultiFenoBloeiminHgte.getAug());
+            blMinBloeihoogteSept.setText(MultiFenoBloeiminHgte.getSep());
+            blMinBloeihoogteOkt.setText(MultiFenoBloeiminHgte.getOkt());
+            blMinBloeihoogteNov.setText(MultiFenoBloeiminHgte.getNov());
+            blMinBloeihoogteDev.setText(MultiFenoBloeiminHgte.getDec());
+
+            //Deze lijst is voor minbloeihoogte
+            blMxBloeihoogteJan.setText(MultiFenoBloeimaxHgte.getJan());
+            blMxBloeihoogteFeb.setText(MultiFenoBloeimaxHgte.getFeb());
+            blMxBloeihoogteMaa.setText(MultiFenoBloeimaxHgte.getMaa());
+            blMxBloeihoogteApr.setText(MultiFenoBloeimaxHgte.getApr());
+
+        } catch (NullPointerException nex) {
+            System.out.println("geen data gevonden");
         }
 
     }
 
-
+    //Author : Ayoub -> Alle Abiotische gegevens gelinkt aan de plant weergeven in het scherm  /
+    // Editor : Leandro -> Dynamisch gemaakt, enkele problemen opgelost, Multi-eigenschappen in een loop gestoken en fout-afhandeling gefixed
     private void AbiotischeInitialize() throws SQLException {
+        //Fout afhandeling, Als er geen gegevens ingeladen wordt, word dit weergegeven in label Bezonning
         try {
             plant.setAbiotischeFactoren(abiotischeFactorenDAO.getById(plant.getId()));
             lblBezonning.setText("" + plant.getAbiotischeFactoren().getBezonning());
@@ -342,17 +375,21 @@ public class ControllerValidatiePlant {
             lblReactie.setText("" + plant.getAbiotischeFactoren().getReactieAntagonistischeOmgeving());
             lblGrondsoort.setText("" + plant.getAbiotischeFactoren().getGrondsoort());
 
+            //voor alle ingevulde eigenschappen een loop gemaakt zodat ze allemaal weergegeven worden.
+            try { //Hier controleren of er wel gegevens aanwezig zijn voor weer te geven
                 for (int i = 0; i < plant.getAbiotischeFactoren().getMultiEigenschappen().size(); i++) {
-                    System.out.println("1" + plant.getAbiotischeFactoren().getMultiEigenschappen().get(i).getValue());
-                    System.out.println("2" + infoTablesDAO.getInfoTables().getHabitats().get(3));
-                    System.out.println("3" + plant.getAbiotischeFactoren().getMultiEigenschappen().get(4).getValue());
                     lblHabitat.setText(lblHabitat.getText() + "\n" + plant.getAbiotischeFactoren().getMultiEigenschappen().get(i).getValue());
-
-        }} catch (NullPointerException ne) {
-            lblBezonning.setText("Oops er liep iets mis met ophalen van gegevens");
+                }
+            } catch (IndexOutOfBoundsException ioe) {
+                System.out.println("Er waren geen habitat gegevens beschikbaar");
+            }
+        } catch (NullPointerException ne) {
+            System.out.println("Bepaalde data niet gevonden voor Abiotische Gegevens");
         }
     }
 
+    //Author : Ayoub -> Alle Beheer gegevens gelinkt aan de plant weergeven in het scherm
+    //Editor : Leandro -> Foutafhandeling gemaakt & tip gegeven om switch-case te maken ipv allemaal if-else
     private void BeheerInitialize() throws SQLException {
         try {
             plant.setBeheer(beheerDAO.getById(plant.getId()));
@@ -361,49 +398,64 @@ public class ControllerValidatiePlant {
             switch (plant.getBeheer().getMultiEigenschappen().get(0).getMaand()) {
                 case "januari":
                     cbxJan1.setSelected(true);
+                    break;
                 case "februari":
                     cbxFeb1.setSelected(true);
+                    break;
                 case "maart":
                     cbxMaa1.setSelected(true);
+                    break;
                 case "april":
                     cbxApr1.setSelected(true);
+                    break;
                 case "mei":
                     cbxMei1.setSelected(true);
+                    break;
                 case "juni":
                     cbxJun1.setSelected(true);
+                    break;
                 case "juli":
                     cbxJul1.setSelected(true);
+                    break;
                 case "augustus":
                     cbxAug1.setSelected(true);
+                    break;
                 case "september":
                     cbxSep1.setSelected(true);
+                    break;
                 case "oktober":
                     cbxOkt1.setSelected(true);
+                    break;
                 case "november":
                     cbxNov1.setSelected(true);
+                    break;
                 case "december":
                     cbxDec1.setSelected(true);
+                    break;
             }
 
         } catch (NullPointerException ne) {
-            lblBehandeling1.setText("Oops er liep iets verkeerd bij ophalen gegevens");
+            System.out.println("Bepaalde gegevens van beheer werden niet gevonden");
         }
     }
 
+    //Author : Ayoub -> Alle Commensalisme gegevens gelinkt aan de plant weergeven in het scherm
+    //Editor : Leandro -> Foutafhandeling gemaakt en loop gemaakt voor multi-eigenschappen
     private void CommensalismeInitialize() throws SQLException {
+        //proberen om gegevens op te halen, indien dit niet overal lukt wordt dit weergegeven
         try {
             plant.setCommensalisme(commensalismeDAO.getById(plant.getId()));
             lblOntwikkelingssnelheid.setText("" + plant.getCommensalisme().getOntwikkelingssnelheid());
             lblStrategie.setText("" + plant.getCommensalisme().getStrategie());
-            try {
-                for (int i = 0; i < plant.getCommensalisme().getMultiEigenschappen().size(); i++) {
 
+            //Deze in een extra try gestoken zodat een out-of-bounds opgevangen wordt.
+            try { //Loop om door alle multi-eigenschappen te gaan en weer te geven
+                for (int i = 0; i < plant.getCommensalisme().getMultiEigenschappen().size(); i++) {
                     lblLevensduur.setText(lblLevensduur.getText() +
                             "\n" + infoTablesDAO.getInfoTables().getConcurentiekrachten().get((Integer.parseInt(plant.getCommensalisme().getMultiEigenschappen().get(i).getValue()))));
-                    lblLevensduur.setWrapText(true);
-                    lblLevensduur.setText(lblLevensduur.getText() + "Er zijn geen correcte gegevens");
-                }
 
+                }
+                //de get(1) is de multi eigenschap : Sociabiliteit
                 switch (plant.getCommensalisme().getMultiEigenschappen().get(1).getValue()) {
                     case "1":
                         cbxSoc1.setSelected(true);
@@ -420,10 +472,12 @@ public class ControllerValidatiePlant {
                 lblStrategie.setText("Er is geen Commensalisme aanwezig");
             }
         } catch (NullPointerException ne) {
-            lblLevensduur.setText("Oops er liep iets mis bij het ophalen van de gegevens");
+            System.out.println("Bepaalde gegevens van Commensalisme werden niet gevonden");
         }
     }
 
+    //Author : Ayoub -> Alle Extra gegevens gelinkt aan de plant weergeven in het scherm
+    //Editor : Leandro -> Foutafhandeling gemaakt
     private void ExtraInitialize() throws SQLException {
         try {
             plant.setExtra(extraDAO.getExtraById(plant.getId()));
@@ -436,42 +490,50 @@ public class ControllerValidatiePlant {
             lblGeurend.setText("" + plantDAO.getPlantById(1).getExtra());
             lblVorstgevoelig.setText("" + plantDAO.getPlantById(1).getExtra());
         } catch (NullPointerException ne) {
-            lblBezonning.setText("Er zijn geen Extra gegevens gevonden");
+            System.out.println("Er zijn bepaalde Extra gegevens niet gevonden");
         }
     }
 
-    private void FotoInitialize() throws SQLException {
+    //Author : Ayoub -> Alle Foto gegevens gelinkt aan de plant weergeven
+    //Editor : Leandro -> Foutaf1handeling gemaakt
+    private void FotoInitialize() throws SQLException, IOException {
         try {
-            plant.setFoto(fotoDAO.getFotoById(101));
-            imgHabitus.setImage((Image) infoTablesDAO.getInfoTables().getHabitusFotos().get(Integer.parseInt(plant.getFenotype().getHabitus())));
-            imgBlad.setImage((Image) plant.getFoto().getFotos().get(0).getImage());
-            imgBloei.setImage((Image) plant.getFoto().getFotos().get(1).getImage());
+            imgHabitus.setImage(infoTablesDAO.getInfoTableBlobHabitus(plant.getFenotype().getHabitus()));
+            try {
+                plant.setFoto(fotoDAO.getFotoById(plant.getId()));
+                imgBlad.setImage((Image) plant.getFoto().getFotos().get(0).getImage());
+                imgBloei.setImage((Image) plant.getFoto().getFotos().get(1).getImage());
+            } catch (NullPointerException ne) {
+                System.out.println("er werden geen foto's gevonden");
+            }
 
-        } catch (NullPointerException npe) {
+        } catch (NullPointerException | IOException npe) {
             System.out.println("Geen foto");
         }
     }
 
+    //Author : Ayoub -> Alle Foto gegevens gelinkt aan de plant weergeven
+    //Editor : Leandro -> Foutafhandeling gemaakt
     private void StandaardInitialize() throws SQLException {
         try {
-            lblType.setText("" + plant.getType());
-            lblFamilie.setText("" + plant.getFamilie());
-            lblGeslacht.setText("" + plant.getGeslacht());
-            lblSoort.setText("" + plant.getSoort());
-            lblVariant.setText("" + plant.getVariatie());
+            lblType.setText(plant.getType());
+            lblFamilie.setText(plant.getFamilie());
+            lblGeslacht.setText(plant.getGeslacht());
+            lblSoort.setText(plant.getSoort());
+            lblVariant.setText(plant.getVariatie());
             lblmin.setText("" + plant.getMinPlantdichtheid());
             lblmax.setText("" + plant.getMaxPlantdichtheid());
         } catch (NullPointerException ne) {
-            lblType.setText("Oops er liep iets verkeerd bij ophalen van gegevens");
+            System.out.println("Er werden bepaalde  hoofdeigenschappen niet terug gevonden");
         }
     }
 
+    //Author : Leandro -> Hiermee maak ik dat de scrollpane zich automatisch aanpast aan de grootte van het scherm.
     private void SchermInitialize() {
         ScrollPane.prefWidthProperty().bind(Anchorpane.widthProperty());
         ScrollPane.prefHeightProperty().bind(Anchorpane.heightProperty());
 
     }
-
 
 }
 
