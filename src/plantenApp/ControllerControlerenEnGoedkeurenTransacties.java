@@ -52,12 +52,20 @@ public class ControllerControlerenEnGoedkeurenTransacties {
         }
     }
 
+    public enum Rol {
+        gast,
+        leerling,
+        admin,
+        docent
+    }
+
     // Variabelen
-    public List<Plant> lijstTeControleren = new ArrayList<Plant>();
+    public List<Plant> lijstPlanten = new ArrayList<Plant>();
     public Gebruiker gebruiker;
     public GebruikerDAO gebruikerDAO;
     public PlantDAO plantDAO;
     public Connection dbconnection;
+
 
     public AnchorPane AnchorPaneBase;
     public TitledPane TitledPaneMain;
@@ -70,36 +78,39 @@ public class ControllerControlerenEnGoedkeurenTransacties {
     public HBox HBoxListToCheck;
 
     //Deze waarde bepaald de weergave van de lijst.
-    private final Status StatusToCheck = Status.teControleren;
+    public Status StatusToCheck;
 
     //Author : Dario -> Constructor
     public ControllerControlerenEnGoedkeurenTransacties() throws SQLException {
     }
 
     //Author : Dario -> Initialize
+    //Editor : Leandro -> fout-afhandeling ingestoken + Methode LijstWeerTeGevenControle();
     public void initialize() throws SQLException {
         try {
             dbconnection = Database.getInstance().getConnection();
             plantDAO = new PlantDAO(dbconnection);
             gebruikerDAO = new GebruikerDAO(dbconnection);
-            lijstTeControleren.clear();
-
-            lijstTeControleren = plantDAO.GetPlantIdByStatus(StatusToCheck.statusValue);
-
+            gebruiker = gebruikerDAO.getGebruikerById(4); //test  4   leerling : 1
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Er liep iets fout met de verbinding");
         }
-
-        if (lijstTeControleren.size() == 0) {
+        LijstWeerTeGevenControle();
+        if (lijstPlanten.size() == 0) {
             Label temp = new Label("Er zijn geen planten te controleren.");
             temp.setStyle("-fx-font: 14 system;");
             temp.setPadding(new Insets(0, 30, 0, 30));
             HBoxListToCheck.getChildren().clear();
             HBoxListToCheck.getChildren().add(temp);
         } else {
-            for (int i = 0; i < lijstTeControleren.size(); i++) {
-                gebruiker = gebruikerDAO.getGebruikerById(lijstTeControleren.get(i).getLaatste_update_door());
-                AddToCheckLine(lijstTeControleren.get(i).getId(), lijstTeControleren.get(i).getFgsv().trim(), gebruiker.getVoornaam() + " " + gebruiker.getAchternaam(), lijstTeControleren.get(i).getLaatste_update_datum());
+            try {
+                for (int i = 0; i < lijstPlanten.size(); i++) {
+                    gebruiker = gebruikerDAO.getGebruikerById(lijstPlanten.get(i).getLaatste_update_door());
+                    gebruiker.setRol("docent");
+                    AddToCheckLine(lijstPlanten.get(i).getId(), lijstPlanten.get(i).getFgsv().trim(), gebruiker.getVoornaam().trim() + " " + gebruiker.getAchternaam(), lijstPlanten.get(i).getLaatste_update_datum());
+                }
+            } catch (NullPointerException ne) {
+                JOptionPane.showMessageDialog(null, "Er zijn bepaalde gegevens van de gebruiker niet gevonden");
             }
         }
         SchermProperties();
@@ -120,19 +131,36 @@ public class ControllerControlerenEnGoedkeurenTransacties {
         lineNaamGebruiker.setStyle("-fx-font: 14 system;");
         lineDatumToegevoed.setStyle("-fx-font: 14 system;");
 
-        //Button aanmaken en stylen voor de nieuwe regel
-        Button bttnControleer = new Button("Controleer");
+        Button bttnControleer = new Button("controleer");
         bttnControleer.setId(Integer.toString(plantID));
         bttnControleer.setStyle("-fx-font: 14 system;");
 
-        //Click event aanmaken voor op de Button voor de nieuwe regel
-        bttnControleer.setOnMouseClicked(mouseEvent -> {
-            try {
-                ButtonEventGoToCheckID(bttnControleer);
-            } catch (IOException | SQLException e) {
-                e.printStackTrace();
-            }
-        });
+        if (gebruiker.getRol().equals("student")) {
+            System.out.println("ik ga in student");
+            System.out.println("ik ga erin");
+            bttnControleer.setText("Wijzigen");
+
+            //Click event aanmaken voor op de Button voor de nieuwe regel
+            bttnControleer.setOnMouseClicked(mouseEvent -> {
+                try {
+                    ButtonEventGoToCheckID(bttnControleer, "PlantWijzigen");
+                } catch (IOException | SQLException e) {
+                    e.printStackTrace();
+                }
+
+            });
+        } else if ((gebruiker.getRol().equals("docent")) || (gebruiker.getRol().equals("admin"))) {
+            System.out.println("ik ga in docent");
+            bttnControleer.setText("Controleren");
+            //Click event aanmaken voor op de Button voor de nieuwe regel
+            bttnControleer.setOnMouseClicked(mouseEvent -> {
+                try {
+                    ButtonEventGoToCheckID(bttnControleer, "GedetailleerdeFiches_(teControleren)");
+                } catch (IOException | SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
         //De regel plaatsen in de bestaande Vboxen. Dit dient om een mooie uitlijning te krijgen
         VBoxPlantNaam.getChildren().add(linePlantnaam);
         VBoxNaamGebruiker.getChildren().add(lineNaamGebruiker);
@@ -142,10 +170,10 @@ public class ControllerControlerenEnGoedkeurenTransacties {
 
     // Auteur Dario
     // opent de gedetailleerde scherm met de gevraagde ID
-    private void ButtonEventGoToCheckID(Button button) throws IOException, SQLException {
+    private void ButtonEventGoToCheckID(Button button, String Scherm) throws IOException, SQLException {
         //Hier vang ik de verwijzing op indien ze  een scherm meegeven die niet bestaat
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/GedetailleerdeFiches_(teControleren).fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/" + Scherm + ".fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             //Hier link ik een event (bijvoorbeeld button) aan zodat het scherm open gaat bij het event
@@ -185,5 +213,30 @@ public class ControllerControlerenEnGoedkeurenTransacties {
         //Hier binden we de title pane aan de anchorpane
         TitledPaneMain.prefWidthProperty().bind(AnchorPaneBase.widthProperty());
         TitledPaneMain.prefHeightProperty().bind(AnchorPaneBase.heightProperty());
+    }
+
+    //Author : Leandro
+    private void LijstWeerTeGevenControle() throws SQLException {
+        try {
+            switch (gebruiker.getRol()) {
+                case "student":
+                    lijstPlanten = plantDAO.Getplantbylaatstupdatedoor(gebruiker.getID());
+                    System.out.println("student");
+                    break;
+                case "docent":
+                case "admin":
+                    lijstPlanten = plantDAO.GetPlantIdByStatus(Status.inBewerking.statusValue);
+                    System.out.println("docent/admin");
+                    break;
+                default:
+                    StatusToCheck = null;
+                    lijstPlanten = null;
+                    break;
+            }
+
+        } catch (NullPointerException ne) {
+            JOptionPane.showMessageDialog(null, "Er werd geen gebruiker terug gevonden");
+
+        }
     }
 }

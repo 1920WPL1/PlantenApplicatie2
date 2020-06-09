@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,6 +21,7 @@ public class PlantDAO implements Queries {
     //Auteur Dario
     private PreparedStatement stmtSelectByStatus;
     private PreparedStatement stmtSetPlantStatus;
+    private PreparedStatement stmtSelectByLaatsteUpdateDoor;
 
     public PlantDAO(Connection dbConnection) throws SQLException {
         this.dbConnection = dbConnection;
@@ -31,6 +31,7 @@ public class PlantDAO implements Queries {
         //Auteur Dario
         stmtSelectByStatus = dbConnection.prepareStatement(GETPLANTBYSTATUS);
         stmtSetPlantStatus = dbConnection.prepareStatement(SETPLANTSTATUS);
+        stmtSelectByLaatsteUpdateDoor = dbConnection.prepareStatement(GETPLANTBYLAATSTE_UPDATE_DOOR);
     }
 
     // Auteur Dario
@@ -97,6 +98,29 @@ public class PlantDAO implements Queries {
         }
         return plant;
     }
+//AUthor : Leandro
+    public List<Plant> Getplantbylaatstupdatedoor(Integer id) throws SQLException {
+        List<Plant> planten = new ArrayList<>();
+        stmtSelectByLaatsteUpdateDoor.setInt(1, id);
+        ResultSet rs = stmtSelectByLaatsteUpdateDoor.executeQuery();
+        if (rs.next()) {
+            planten.add(new Plant(
+                    rs.getInt("plant_id"),
+                    rs.getString("planttype"),
+                    rs.getString("familie"),
+                    rs.getString("geslacht"),
+                    rs.getString("soort"),
+                    rs.getString("variatie"),
+                    rs.getInt("plantdichtheid_min"),
+                    rs.getInt("plantdichtheid_max"),
+                    rs.getString("fgsv"),
+                    rs.getInt("status"),
+                    rs.getDate("laatste_update_datum"),
+                    rs.getInt("laatste_update_door")));
+        }
+
+        return planten;
+    }
 
     /**
      * @param type    -> waarde type van de plant
@@ -127,5 +151,5 @@ public class PlantDAO implements Queries {
         }
         return ids;
     }
-    
+
 }

@@ -25,7 +25,7 @@ public class Plant {
     private Fenotype fenotype;
     private Foto foto;
 
-    public Plant(int id, String planttype, String familie, String geslacht, String soort, String variatie, int minPlantdichtheid, int maxPlantdichtheid,String fgsv, int status, Date lastUpdated, int gebruikerID) {
+    public Plant(int id, String planttype, String familie, String geslacht, String soort, String variatie, int minPlantdichtheid, int maxPlantdichtheid, String fgsv, int status, Date laatste_update_datum, int laatste_update_door) {
         this.id = id;
         this.planttype = planttype;
         this.familie = familie;
@@ -36,8 +36,8 @@ public class Plant {
         this.maxPlantdichtheid = maxPlantdichtheid;
         this.fgsv = fgsv;
         this.status = status;
-        this.laatste_update_datum = lastUpdated;
-        this.laatste_update_door = gebruikerID;
+        this.laatste_update_datum = laatste_update_datum;
+        this.laatste_update_door = laatste_update_door;
     }
 
     public int getId() {
