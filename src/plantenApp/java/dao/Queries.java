@@ -15,9 +15,14 @@ public interface Queries {
     String GETGEBRUIKERBYID = "SELECT * FROM gebruiker WHERE gebruiker_id = ?";
     //endregion
 
-    //region GETBYID
+
+    //region Plant
 
     String GETPLANTBYSTATUS = "SELECT * FROM plant WHERE status = ?";
+    String SETPLANTSTATUS = "UPDATE plant SET status = ? WHERE plant_id = ?";
+
+
+    //region GETBYID
     String GETPLANTBYID = "SELECT * FROM plant WHERE plant_id = ?";
 
     String GETFENOTYPEBYPLANTID = "SELECT * FROM fenotype WHERE plant_id = ?";

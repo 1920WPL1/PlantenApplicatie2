@@ -18,13 +18,19 @@ public class PlantDAO implements Queries {
     private Connection dbConnection;
     private PreparedStatement stmtSelectById;
     private PreparedStatement stmtSelectByPlant;
+
+    //Auteur Dario
     private PreparedStatement stmtSelectByStatus;
+    private PreparedStatement stmtSetPlantStatus;
 
     public PlantDAO(Connection dbConnection) throws SQLException {
         this.dbConnection = dbConnection;
         stmtSelectById = dbConnection.prepareStatement(GETPLANTBYID);
         stmtSelectByPlant = dbConnection.prepareStatement(GETIDSBYPLANT);
+
+        //Auteur Dario
         stmtSelectByStatus = dbConnection.prepareStatement(GETPLANTBYSTATUS);
+        stmtSetPlantStatus = dbConnection.prepareStatement(SETPLANTSTATUS);
     }
 
     // Auteur Dario
@@ -53,6 +59,14 @@ public class PlantDAO implements Queries {
         }
 
         return lijstPlantId;
+    }
+
+    // Auteur Dario
+    public void setStatus(int status, int plantId) throws SQLException
+    {
+        stmtSetPlantStatus.setString(1,Integer.toString(status));
+        stmtSetPlantStatus.setString(2,Integer.toString(plantId));
+        stmtSetPlantStatus.executeUpdate();
     }
 
     /**

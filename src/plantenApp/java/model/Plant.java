@@ -127,6 +127,7 @@ public class Plant {
     public int getStatus() {
         return status;
     }
+
     public Date getLastUpdated(){return lastUpdated;}
     public int getGebruikerID(){return gebruikerID;}
 }

@@ -82,11 +82,12 @@ public class ControllerControlerenEnGoedkeurenTransacties {
             dbconnection = Database.getInstance().getConnection();
             plantDAO = new PlantDAO(dbconnection);
             gebruikerDAO = new GebruikerDAO(dbconnection);
+            lijstTeControleren.clear();
             lijstTeControleren = plantDAO.GetPlantIdByStatus(StatusToCheck.statusValue);
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Er liep iets fout met de verbinding");
         }
-
 
         if (lijstTeControleren.size() == 0) {
             Label temp = new Label("Er zijn geen planten te controleren.");
@@ -94,13 +95,12 @@ public class ControllerControlerenEnGoedkeurenTransacties {
             temp.setPadding(new Insets(0, 30, 0, 30));
             HBoxListToCheck.getChildren().clear();
             HBoxListToCheck.getChildren().add(temp);
-        } else {//nog aanpassen
+        } else {
             for (int i = 0; i < lijstTeControleren.size(); i++) {
                 gebruiker = gebruikerDAO.getGebruikerById(lijstTeControleren.get(i).getGebruikerID());
                 AddToCheckLine(lijstTeControleren.get(i).getId(), lijstTeControleren.get(i).getFgsv().trim(), gebruiker.getVoornaam() + " " + gebruiker.getAchternaam(), lijstTeControleren.get(i).getLastUpdated());
             }
         }
-
         SchermProperties();
     }
 
