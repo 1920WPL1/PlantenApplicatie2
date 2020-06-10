@@ -103,7 +103,7 @@ public class PlantDAO implements Queries {
         List<Plant> planten = new ArrayList<>();
         stmtSelectByLaatsteUpdateDoor.setInt(1, id);
         ResultSet rs = stmtSelectByLaatsteUpdateDoor.executeQuery();
-        if (rs.next()) {
+        while (rs.next()) {
             planten.add(new Plant(
                     rs.getInt("plant_id"),
                     rs.getString("planttype"),

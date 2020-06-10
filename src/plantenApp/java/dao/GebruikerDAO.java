@@ -42,7 +42,7 @@ public class GebruikerDAO implements Queries {
                                 rs.getString("achternaam"),
                                 rs.getString("email"),
                                 rs.getString("rol"),
-                                rs.getDate("aanvraag_datum"),
+                                rs.getDate("aanvraagdatum"),
                                 rs.getInt("aanvraag_goedgekeurd"),
                                 rs.getInt("geregistreerd"),
                                 rs.getDate("last_login"),
@@ -74,7 +74,6 @@ public class GebruikerDAO implements Queries {
                     rs.getString("rol"),
                     rs.getDate("aanvraagdatum"),
                     rs.getInt("aanvraag_status"),
-                    rs.getDate("last_login"),
                     rs.getInt("geregistreerd"),
                     rs.getDate("last_login"),
                     rs.getBytes("wachtwoord_hash"),
@@ -97,8 +96,8 @@ public class GebruikerDAO implements Queries {
                     rs.getString("achternaam"),
                     rs.getString("email"),
                     rs.getString("rol"),
-                    rs.getDate("aanvraag_datum"),
-                    rs.getInt("aanvraag_goedgekeurd"),
+                    rs.getDate("aanvraagdatum"),
+                    rs.getInt("aanvraag_status"),
                     rs.getInt("geregistreerd"),
                     rs.getDate("last_login"),
                     rs.getBytes("wachtwoord_hash"),
@@ -106,5 +105,4 @@ public class GebruikerDAO implements Queries {
         }
         return gebruiker;
     }
-}
 }

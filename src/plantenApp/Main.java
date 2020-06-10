@@ -16,7 +16,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("view/ControlerenEnGoedkeurenTransacties.fxml"));
 
         primaryStage.setTitle("Planten applicatie");
-        primaryStage.setScene(new Scene(root , 1000, 550));
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 

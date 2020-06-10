@@ -53,12 +53,17 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </VBox>
+                                    <VBox fx:id="VBoxStatusPlant" fillWidth="false" layoutX="81.0" layoutY="20.0" spacing="30.0">
+                                       <padding>
+                                          <Insets right="20.0" top="5.0" />
+                                       </padding>
+                                    </VBox>
                                     <VBox fx:id="VBoxButtonsControleer" fillWidth="false" spacing="20.0">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                        <padding>
-                                          <Insets right="30.0" />
+                                          <Insets right="20.0" />
                                        </padding>
                                     </VBox>
                                  </children>

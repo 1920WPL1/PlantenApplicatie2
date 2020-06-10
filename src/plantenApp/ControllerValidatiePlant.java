@@ -170,9 +170,8 @@ public class ControllerValidatiePlant {
         AbiotischeInitialize();
         CommensalismeInitialize();
         FotoInitialize();
-        SchermInitialize();
         StandaardInitialize();
-
+        ExtraInitialize();
     }
 
     //Author : Leandro & Ayoub : Hier maken we connectie met alle dao's om de gegevens te halen.
@@ -212,7 +211,8 @@ public class ControllerValidatiePlant {
     }
 
     //Author : Ayoub
-    public void Clicked_Ok(MouseEvent mouseEvent) throws IOException {
+    public void Clicked_Ok(MouseEvent mouseEvent) throws IOException, SQLException
+    {
         // Hier sla ik de opties op om ze als variabel te gebruiken
         Object[] options = {"OK", "CANCEL"};
         //Hier controleer ik of ze effectief bevestigen of niet voor ik de data wegschrijf naar Database
@@ -225,7 +225,8 @@ public class ControllerValidatiePlant {
     }
 
     //Author : Ayoub
-    public void Clicked_NietOk(MouseEvent mouseEvent) throws IOException {
+    public void Clicked_NietOk(MouseEvent mouseEvent) throws IOException, SQLException
+    {
         // Hier sla ik de opties op om ze als variabel te gebruiken
         Object[] options = {"OK", "CANCEL"};
         //Hier controleer ik of ze effectief bevestigen of niet voor ik de data wegschrijf naar Database
@@ -264,7 +265,7 @@ public class ControllerValidatiePlant {
             //Hier link ik een event (bijvoorbeeld button) aan zodat het scherm open gaat bij het event
             Stage window = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             //Controller Aanvragen van Scherm (deze is gelinkt in schermxml) --> KLasse Controller nog aanpassen naar correcte controller volgens scherm.
-            Controller controller = loader.getController(); // -->
+            Controller controller = loader.getController(); // --> moet aangepast worden naar correcte controller bv validatieplantController controller = ...
             //hier de Methode initialize aan gesproken en parameter meegegeven. --> Indien de methode anders gebruik word moet deze hier ook aangepast worden.
             controller.initialize(PlantId);
             window.setScene(scene);
@@ -275,94 +276,38 @@ public class ControllerValidatiePlant {
         }
     }
 
-    //Author : Leandro -> alle Fenotype gegevens gelinkt aan de plant weergeven in het scherm
-    private void FenoInitialize() throws SQLException {
+    //Author : Ayoub -> Alle Foto gegevens gelinkt aan de plant weergeven
+    //Editor : Leandro -> Foutaf1handeling gemaakt
+    private void FotoInitialize() throws SQLException, IOException {
         try {
-            //Hier vul ik alle veriabelen op met de Gegevens uit de DB en zet ik alle fenotype data in de plant
-            plant.setFenotype(fenotypeDAO.getById(plant.getId()));
-            Fenotype PlantFeno = plant.getFenotype();
-            lblBldGrootte.setText("" + PlantFeno.getBladgrootte());
-            lblBldVrm.setText(PlantFeno.getBladvorm());
-            lblRatio.setText(PlantFeno.getRatio_bloei_blad());
-            lblSpruitfnlgie.setText(PlantFeno.getSpruitfenologie());
-            lblRaunkhiaer.setText(PlantFeno.getLevensvorm());
-            lblHabitus.setText(PlantFeno.getHabitus());
-            lblBloeiwijze.setText(PlantFeno.getBloeiwijze());
+            imgHabitus.setImage(infoTablesDAO.getInfoTableBlobHabitus(plant.getFenotype().getHabitus()));
+            try {
+                plant.setFoto(fotoDAO.getFotoById(plant.getId()));
+                imgBlad.setImage((Image) plant.getFoto().getFotos().get(0).getImage());
+                imgBloei.setImage((Image) plant.getFoto().getFotos().get(1).getImage());
+            } catch (NullPointerException ne) {
+                System.out.println("er werden geen foto's gevonden");
+            }
 
-            //Variabelen gemaakt zodanig dat het overzichteljk blijft en geen ellenlange code + copy past moet gebeuren
-            MultiFenoBldHgte = PlantFeno.getMultiEigenschappen().get(0); //Bladhoogte
-            MultiFenoBloeiminHgte = PlantFeno.getMultiEigenschappen().get(1); //min-Bloeihoogte
-            MultiFenoBloeimaxHgte = PlantFeno.getMultiEigenschappen().get(2); //max-Bloeihoogte
-            MultiFenoBldkleur = PlantFeno.getMultiEigenschappen().get(3); //Bladkleur
-            MultiFenoBloeikleur = PlantFeno.getMultiEigenschappen().get(4); //Bloeikleur
-            System.out.println(PlantFeno.getMultiEigenschappen().get(2).getNaam());
-
-            //Deze werkt per maand de Max-Bladhoogte. variabel gebruikt om het overzichtelijk te houden
-            blMxBladhoogteJan.setText(MultiFenoBldHgte.getJan());
-            blMxBladhoogteFeb.setText(MultiFenoBldHgte.getFeb());
-            blMxBladhoogteMaa.setText(MultiFenoBldHgte.getMaa());
-            blMxBladhoogteApr.setText(MultiFenoBldHgte.getApr());
-            blMxBladhoogteMei.setText(MultiFenoBldHgte.getMei());
-            blMxBladhoogteJun.setText(MultiFenoBldHgte.getJun());
-            blMxBladhoogteJul.setText(MultiFenoBldHgte.getJul());
-            blMxBladhoogteAug.setText(MultiFenoBldHgte.getAug());
-            blMxBladhoogteSept.setText(MultiFenoBldHgte.getSep());
-            blMxBladhoogteOkt.setText(MultiFenoBldHgte.getOkt());
-            blMxBladhoogteNov.setText(MultiFenoBldHgte.getNov());
-            blMxBladhoogteDec.setText(MultiFenoBldHgte.getDec());
-
-            //Deze werkt per maand de BLadkleur. variabel gebruikt om het overzichtelijk te houden
-            lblBladKlrJan.setText(MultiFenoBldkleur.getJan());
-            lblBladKlrFeb.setText(MultiFenoBldkleur.getFeb());
-            lblBladKlrMaa.setText(MultiFenoBldkleur.getMaa());
-            lblBladKlrApr.setText(MultiFenoBldkleur.getApr());
-            lblBladKlrMei.setText(MultiFenoBldkleur.getMei());
-            lblBladKlrJun.setText(MultiFenoBldkleur.getJun());
-            lblBladKlrJul.setText(MultiFenoBldkleur.getJul());
-            lblBladKlrAug.setText(MultiFenoBldkleur.getAug());
-            lblBladKlrSept.setText(MultiFenoBldkleur.getSep());
-            lblBladKlrOkt.setText(MultiFenoBldkleur.getOkt());
-            lblBladKlrNov.setText(MultiFenoBldkleur.getNov());
-            lblBladKlrDec.setText(MultiFenoBldkleur.getDec());
-
-            //Deze werkt per maand de Bloeikleur. variabel gebruikt om het overzichtelijk te houden
-            lblBloeiKlrJan.setText(MultiFenoBloeikleur.getJan());
-            lblBloeiKlrFeb.setText(MultiFenoBloeikleur.getFeb());
-            lblBloeiKlrMaa.setText(MultiFenoBloeikleur.getMaa());
-            lblBloeiKlrApr.setText(MultiFenoBloeikleur.getApr());
-            lblBloeiKlrMei.setText(MultiFenoBloeikleur.getMei());
-            lblBloeiKlrJun.setText(MultiFenoBloeikleur.getJun());
-            lblBloeiKlrJul.setText(MultiFenoBloeikleur.getJul());
-            lblBloeiKlrAug.setText(MultiFenoBloeikleur.getAug());
-            lblBloeiKlrSept.setText(MultiFenoBloeikleur.getSep());
-            lblBloeiKlrOkt.setText(MultiFenoBloeikleur.getOkt());
-            lblBloeiKlrNov.setText(MultiFenoBloeikleur.getNov());
-            lblBloeiKlrDec.setText(MultiFenoBloeikleur.getDec());
-
-            //Deze lijst is voor Maxbloeihoogte
-            blMinBloeihoogteJan.setText(MultiFenoBloeiminHgte.getJan());
-            blMinBloeihoogteFeb.setText(MultiFenoBloeiminHgte.getFeb());
-            blMinBloeihoogteMaa.setText(MultiFenoBloeiminHgte.getMaa());
-            blMinBloeihoogteApr.setText(MultiFenoBloeiminHgte.getApr());
-            blMinBloeihoogteMei.setText(MultiFenoBloeiminHgte.getMei());
-            blMinBloeihoogteJun.setText(MultiFenoBloeiminHgte.getJun());
-            blMinBloeihoogteJul.setText(MultiFenoBloeiminHgte.getJul());
-            blMinBloeihoogteAug.setText(MultiFenoBloeiminHgte.getAug());
-            blMinBloeihoogteSept.setText(MultiFenoBloeiminHgte.getSep());
-            blMinBloeihoogteOkt.setText(MultiFenoBloeiminHgte.getOkt());
-            blMinBloeihoogteNov.setText(MultiFenoBloeiminHgte.getNov());
-            blMinBloeihoogteDev.setText(MultiFenoBloeiminHgte.getDec());
-
-            //Deze lijst is voor minbloeihoogte
-            blMxBloeihoogteJan.setText(MultiFenoBloeimaxHgte.getJan());
-            blMxBloeihoogteFeb.setText(MultiFenoBloeimaxHgte.getFeb());
-            blMxBloeihoogteMaa.setText(MultiFenoBloeimaxHgte.getMaa());
-            blMxBloeihoogteApr.setText(MultiFenoBloeimaxHgte.getApr());
-
-        } catch (NullPointerException nex) {
-            System.out.println("geen data gevonden");
+        } catch (NullPointerException | IOException npe) {
+            System.out.println("Geen foto");
         }
+    }
 
+    //Author : Ayoub -> Alle Foto gegevens gelinkt aan de plant weergeven
+    //Editor : Leandro -> Foutafhandeling gemaakt
+    private void StandaardInitialize() throws SQLException {
+        try {
+            lblType.setText("" + plant.getPlanttype());
+            lblFamilie.setText("" + plant.getFamilie());
+            lblGeslacht.setText("" + plant.getGeslacht());
+            lblSoort.setText("" + plant.getSoort());
+            lblVariant.setText("" + plant.getVariatie());
+            lblmin.setText("" + plant.getMinPlantdichtheid());
+            lblmax.setText("" + plant.getMaxPlantdichtheid());
+        } catch (NullPointerException ne) {
+            System.out.println("Er werden bepaalde  hoofdeigenschappen niet terug gevonden");
+        }
     }
 
     //Author : Ayoub -> Alle Abiotische gegevens gelinkt aan de plant weergeven in het scherm  /
@@ -496,38 +441,94 @@ public class ControllerValidatiePlant {
         }
     }
 
-    //Author : Ayoub -> Alle Foto gegevens gelinkt aan de plant weergeven
-    //Editor : Leandro -> Foutaf1handeling gemaakt
-    private void FotoInitialize() throws SQLException, IOException {
+    //Author : Leandro -> alle Fenotype gegevens gelinkt aan de plant weergeven in het scherm
+    private void FenoInitialize() throws SQLException {
         try {
-            imgHabitus.setImage(infoTablesDAO.getInfoTableBlobHabitus(plant.getFenotype().getHabitus()));
-            try {
-                plant.setFoto(fotoDAO.getFotoById(plant.getId()));
-                imgBlad.setImage((Image) plant.getFoto().getFotos().get(0).getImage());
-                imgBloei.setImage((Image) plant.getFoto().getFotos().get(1).getImage());
-            } catch (NullPointerException ne) {
-                System.out.println("er werden geen foto's gevonden");
-            }
+            //Hier vul ik alle veriabelen op met de Gegevens uit de DB en zet ik alle fenotype data in de plant
+            plant.setFenotype(fenotypeDAO.getById(plant.getId()));
+            Fenotype PlantFeno = plant.getFenotype();
+            lblBldGrootte.setText("" + PlantFeno.getBladgrootte());
+            lblBldVrm.setText(PlantFeno.getBladvorm());
+            lblRatio.setText(PlantFeno.getRatio_bloei_blad());
+            lblSpruitfnlgie.setText(PlantFeno.getSpruitfenologie());
+            lblRaunkhiaer.setText(PlantFeno.getLevensvorm());
+            lblHabitus.setText(PlantFeno.getHabitus());
+            lblBloeiwijze.setText(PlantFeno.getBloeiwijze());
 
-        } catch (NullPointerException | IOException npe) {
-            System.out.println("Geen foto");
-        }
-    }
+            //Variabelen gemaakt zodanig dat het overzichteljk blijft en geen ellenlange code + copy past moet gebeuren
+            MultiFenoBldHgte = PlantFeno.getMultiEigenschappen().get(0); //Bladhoogte
+            MultiFenoBloeiminHgte = PlantFeno.getMultiEigenschappen().get(1); //min-Bloeihoogte
+            MultiFenoBloeimaxHgte = PlantFeno.getMultiEigenschappen().get(2); //max-Bloeihoogte
+            MultiFenoBldkleur = PlantFeno.getMultiEigenschappen().get(3); //Bladkleur
+            MultiFenoBloeikleur = PlantFeno.getMultiEigenschappen().get(4); //Bloeikleur
+            System.out.println(PlantFeno.getMultiEigenschappen().get(2).getNaam());
 
-    //Author : Ayoub -> Alle Foto gegevens gelinkt aan de plant weergeven
-    //Editor : Leandro -> Foutafhandeling gemaakt
-    private void StandaardInitialize() throws SQLException {
-        try {
-            lblType.setText("" + plant.getPlanttype());
-            lblFamilie.setText("" + plant.getFamilie());
-            lblGeslacht.setText("" + plant.getGeslacht());
-            lblSoort.setText("" + plant.getSoort());
-            lblVariant.setText("" + plant.getVariatie());
-            lblmin.setText("" + plant.getMinPlantdichtheid());
-            lblmax.setText("" + plant.getMaxPlantdichtheid());
-        } catch (NullPointerException ne) {
-            System.out.println("Er werden bepaalde  hoofdeigenschappen niet terug gevonden");
+            //Deze werkt per maand de Max-Bladhoogte. variabel gebruikt om het overzichtelijk te houden
+            blMxBladhoogteJan.setText(MultiFenoBldHgte.getJan());
+            blMxBladhoogteFeb.setText(MultiFenoBldHgte.getFeb());
+            blMxBladhoogteMaa.setText(MultiFenoBldHgte.getMaa());
+            blMxBladhoogteApr.setText(MultiFenoBldHgte.getApr());
+            blMxBladhoogteMei.setText(MultiFenoBldHgte.getMei());
+            blMxBladhoogteJun.setText(MultiFenoBldHgte.getJun());
+            blMxBladhoogteJul.setText(MultiFenoBldHgte.getJul());
+            blMxBladhoogteAug.setText(MultiFenoBldHgte.getAug());
+            blMxBladhoogteSept.setText(MultiFenoBldHgte.getSep());
+            blMxBladhoogteOkt.setText(MultiFenoBldHgte.getOkt());
+            blMxBladhoogteNov.setText(MultiFenoBldHgte.getNov());
+            blMxBladhoogteDec.setText(MultiFenoBldHgte.getDec());
+
+            //Deze werkt per maand de BLadkleur. variabel gebruikt om het overzichtelijk te houden
+            lblBladKlrJan.setText(MultiFenoBldkleur.getJan());
+            lblBladKlrFeb.setText(MultiFenoBldkleur.getFeb());
+            lblBladKlrMaa.setText(MultiFenoBldkleur.getMaa());
+            lblBladKlrApr.setText(MultiFenoBldkleur.getApr());
+            lblBladKlrMei.setText(MultiFenoBldkleur.getMei());
+            lblBladKlrJun.setText(MultiFenoBldkleur.getJun());
+            lblBladKlrJul.setText(MultiFenoBldkleur.getJul());
+            lblBladKlrAug.setText(MultiFenoBldkleur.getAug());
+            lblBladKlrSept.setText(MultiFenoBldkleur.getSep());
+            lblBladKlrOkt.setText(MultiFenoBldkleur.getOkt());
+            lblBladKlrNov.setText(MultiFenoBldkleur.getNov());
+            lblBladKlrDec.setText(MultiFenoBldkleur.getDec());
+
+            //Deze werkt per maand de Bloeikleur. variabel gebruikt om het overzichtelijk te houden
+            lblBloeiKlrJan.setText(MultiFenoBloeikleur.getJan());
+            lblBloeiKlrFeb.setText(MultiFenoBloeikleur.getFeb());
+            lblBloeiKlrMaa.setText(MultiFenoBloeikleur.getMaa());
+            lblBloeiKlrApr.setText(MultiFenoBloeikleur.getApr());
+            lblBloeiKlrMei.setText(MultiFenoBloeikleur.getMei());
+            lblBloeiKlrJun.setText(MultiFenoBloeikleur.getJun());
+            lblBloeiKlrJul.setText(MultiFenoBloeikleur.getJul());
+            lblBloeiKlrAug.setText(MultiFenoBloeikleur.getAug());
+            lblBloeiKlrSept.setText(MultiFenoBloeikleur.getSep());
+            lblBloeiKlrOkt.setText(MultiFenoBloeikleur.getOkt());
+            lblBloeiKlrNov.setText(MultiFenoBloeikleur.getNov());
+            lblBloeiKlrDec.setText(MultiFenoBloeikleur.getDec());
+
+            //Deze lijst is voor Maxbloeihoogte
+            blMinBloeihoogteJan.setText(MultiFenoBloeiminHgte.getJan());
+            blMinBloeihoogteFeb.setText(MultiFenoBloeiminHgte.getFeb());
+            blMinBloeihoogteMaa.setText(MultiFenoBloeiminHgte.getMaa());
+            blMinBloeihoogteApr.setText(MultiFenoBloeiminHgte.getApr());
+            blMinBloeihoogteMei.setText(MultiFenoBloeiminHgte.getMei());
+            blMinBloeihoogteJun.setText(MultiFenoBloeiminHgte.getJun());
+            blMinBloeihoogteJul.setText(MultiFenoBloeiminHgte.getJul());
+            blMinBloeihoogteAug.setText(MultiFenoBloeiminHgte.getAug());
+            blMinBloeihoogteSept.setText(MultiFenoBloeiminHgte.getSep());
+            blMinBloeihoogteOkt.setText(MultiFenoBloeiminHgte.getOkt());
+            blMinBloeihoogteNov.setText(MultiFenoBloeiminHgte.getNov());
+            blMinBloeihoogteDev.setText(MultiFenoBloeiminHgte.getDec());
+
+            //Deze lijst is voor minbloeihoogte
+            blMxBloeihoogteJan.setText(MultiFenoBloeimaxHgte.getJan());
+            blMxBloeihoogteFeb.setText(MultiFenoBloeimaxHgte.getFeb());
+            blMxBloeihoogteMaa.setText(MultiFenoBloeimaxHgte.getMaa());
+            blMxBloeihoogteApr.setText(MultiFenoBloeimaxHgte.getApr());
+
+        } catch (NullPointerException nex) {
+            System.out.println("geen data gevonden");
         }
+
     }
 
     //Author : Leandro -> Hiermee maak ik dat de scrollpane zich automatisch aanpast aan de grootte van het scherm.

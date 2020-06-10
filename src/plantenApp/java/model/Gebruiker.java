@@ -34,14 +34,6 @@ public class Gebruiker
         this.salt = salt;
     }
 
-    public Date getLast_login() {
-        return last_login;
-    }
-
-    public void setLast_login(Date last_login) {
-        this.last_login = last_login;
-    }
-
     public int getID() {
         return id;
     }

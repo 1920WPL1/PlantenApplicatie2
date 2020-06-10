@@ -74,6 +74,7 @@ public class ControllerControlerenEnGoedkeurenTransacties {
     public VBox VBoxPlantNaam;
     public VBox VBoxNaamGebruiker;
     public VBox VBoxDatumToegevoegd;
+    public VBox VBoxStatusPlant;
     public VBox VBoxButtonsControleer;
     public HBox HBoxListToCheck;
 
@@ -95,6 +96,7 @@ public class ControllerControlerenEnGoedkeurenTransacties {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Er liep iets fout met de verbinding");
         }
+
         LijstWeerTeGevenControle();
         if (lijstPlanten.size() == 0) {
             Label temp = new Label("Er zijn geen planten te controleren.");
@@ -105,13 +107,13 @@ public class ControllerControlerenEnGoedkeurenTransacties {
         } else {
             try {
                 for (int i = 0; i < lijstPlanten.size(); i++) {
-                    gebruiker = gebruikerDAO.getGebruikerById(lijstPlanten.get(i).getLaatste_update_door());
-                    gebruiker.setRol("docent");
-                    AddToCheckLine(lijstPlanten.get(i).getId(), lijstPlanten.get(i).getFgsv().trim(), gebruiker.getVoornaam().trim() + " " + gebruiker.getAchternaam(), lijstPlanten.get(i).getLaatste_update_datum());
+                    Gebruiker temp = gebruikerDAO.getGebruikerById(lijstPlanten.get(i).getLaatste_update_door());
+                    AddToCheckLine(lijstPlanten.get(i).getId(), lijstPlanten.get(i).getFgsv().trim(), temp.getVoornaam().trim() + " " + temp.getAchternaam(), lijstPlanten.get(i).getLaatste_update_datum(), lijstPlanten.get(i).getStatus());
                 }
             } catch (NullPointerException ne) {
                 JOptionPane.showMessageDialog(null, "Er zijn bepaalde gegevens van de gebruiker niet gevonden");
             }
+
         }
         SchermProperties();
     }
@@ -120,7 +122,7 @@ public class ControllerControlerenEnGoedkeurenTransacties {
     // Functions
     // Auteur Dario
     // genereert een nieuwe regel dat gecontroleerd moet worden
-    private void AddToCheckLine(int plantID, String plantnaam, String naamGebruiker, Date lastUpdated) {
+    private void AddToCheckLine(int plantID, String plantnaam, String naamGebruiker, Date lastUpdated, int status) {
         //Labels aanmaken voor in de nieuwe regel
         Label linePlantnaam = new Label("Plant: " + plantnaam);
         Label lineNaamGebruiker = new Label("Aangepast door: " + naamGebruiker);
@@ -136,10 +138,24 @@ public class ControllerControlerenEnGoedkeurenTransacties {
         bttnControleer.setStyle("-fx-font: 14 system;");
 
         if (gebruiker.getRol().equals("student")) {
-            System.out.println("ik ga in student");
-            System.out.println("ik ga erin");
-            bttnControleer.setText("Wijzigen");
+            Status temp = null;
+            switch (status)
+            {
+                case 0:
+                    temp = Status.inBewerking;
+                    break;
+                case 1:
+                    temp = Status.teControleren;
+                    break;
+                case 2:
+                    temp = Status.goedgekeurd;
+                    break;
+            }
+            Label lineStatusPlant = new Label("status: " + temp);
+            lineStatusPlant.setStyle("-fx-font: 14 system;");
+            VBoxStatusPlant.getChildren().add(lineStatusPlant);
 
+            bttnControleer.setText("Wijzigen");
             //Click event aanmaken voor op de Button voor de nieuwe regel
             bttnControleer.setOnMouseClicked(mouseEvent -> {
                 try {
@@ -147,11 +163,11 @@ public class ControllerControlerenEnGoedkeurenTransacties {
                 } catch (IOException | SQLException e) {
                     e.printStackTrace();
                 }
-
             });
         } else if ((gebruiker.getRol().equals("docent")) || (gebruiker.getRol().equals("admin"))) {
             System.out.println("ik ga in docent");
             bttnControleer.setText("Controleren");
+
             //Click event aanmaken voor op de Button voor de nieuwe regel
             bttnControleer.setOnMouseClicked(mouseEvent -> {
                 try {
@@ -210,6 +226,7 @@ public class ControllerControlerenEnGoedkeurenTransacties {
         // dit doen we om een correcte hoogte & breedte weer te geven bij opstart
         AnchorPaneBase.setPrefHeight(ScrollPaneList.getHeight());
         AnchorPaneBase.setPrefWidth(ScrollPaneList.getWidth());
+
         //Hier binden we de title pane aan de anchorpane
         TitledPaneMain.prefWidthProperty().bind(AnchorPaneBase.widthProperty());
         TitledPaneMain.prefHeightProperty().bind(AnchorPaneBase.heightProperty());
@@ -225,7 +242,7 @@ public class ControllerControlerenEnGoedkeurenTransacties {
                     break;
                 case "docent":
                 case "admin":
-                    lijstPlanten = plantDAO.GetPlantIdByStatus(Status.inBewerking.statusValue);
+                    lijstPlanten = plantDAO.GetPlantIdByStatus(Status.teControleren.statusValue);
                     System.out.println("docent/admin");
                     break;
                 default:
