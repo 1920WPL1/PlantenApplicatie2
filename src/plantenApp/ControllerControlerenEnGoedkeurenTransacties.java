@@ -52,12 +52,20 @@ public class ControllerControlerenEnGoedkeurenTransacties {
         }
     }
 
+    public enum Rol {
+        gast,
+        leerling,
+        admin,
+        docent
+    }
+
     // Variabelen
-    public List<Plant> lijstTeControleren = new ArrayList<Plant>();
+    public List<Plant> lijstPlanten = new ArrayList<Plant>();
     public Gebruiker gebruiker;
     public GebruikerDAO gebruikerDAO;
     public PlantDAO plantDAO;
     public Connection dbconnection;
+
 
     public AnchorPane AnchorPaneBase;
     public TitledPane TitledPaneMain;
@@ -66,41 +74,46 @@ public class ControllerControlerenEnGoedkeurenTransacties {
     public VBox VBoxPlantNaam;
     public VBox VBoxNaamGebruiker;
     public VBox VBoxDatumToegevoegd;
+    public VBox VBoxStatusPlant;
     public VBox VBoxButtonsControleer;
     public HBox HBoxListToCheck;
 
     //Deze waarde bepaald de weergave van de lijst.
-    private final Status StatusToCheck = Status.teControleren;
+    public Status StatusToCheck;
 
     //Author : Dario -> Constructor
     public ControllerControlerenEnGoedkeurenTransacties() throws SQLException {
     }
 
     //Author : Dario -> Initialize
+    //Editor : Leandro -> fout-afhandeling ingestoken + Methode LijstWeerTeGevenControle();
     public void initialize() throws SQLException {
         try {
             dbconnection = Database.getInstance().getConnection();
             plantDAO = new PlantDAO(dbconnection);
             gebruikerDAO = new GebruikerDAO(dbconnection);
-            lijstTeControleren.clear();
-
-            lijstTeControleren = plantDAO.GetPlantIdByStatus(StatusToCheck.statusValue);
-
+            gebruiker = gebruikerDAO.getGebruikerById(1); //test  4   leerling : 1
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Er liep iets fout met de verbinding");
         }
 
-        if (lijstTeControleren.size() == 0) {
+        LijstWeerTeGevenControle();
+        if (lijstPlanten.size() == 0) {
             Label temp = new Label("Er zijn geen planten te controleren.");
             temp.setStyle("-fx-font: 14 system;");
             temp.setPadding(new Insets(0, 30, 0, 30));
             HBoxListToCheck.getChildren().clear();
             HBoxListToCheck.getChildren().add(temp);
         } else {
-            for (int i = 0; i < lijstTeControleren.size(); i++) {
-                gebruiker = gebruikerDAO.getGebruikerById(lijstTeControleren.get(i).getLaatste_Update_Door());
-                AddToCheckLine(lijstTeControleren.get(i).getId(), lijstTeControleren.get(i).getFgsv().trim(), gebruiker.getVoornaam() + " " + gebruiker.getAchternaam(), lijstTeControleren.get(i).getLaatste_update_datum());
+            try {
+                for (int i = 0; i < lijstPlanten.size(); i++) {
+                    Gebruiker temp = gebruikerDAO.getGebruikerById(lijstPlanten.get(i).getLaatste_Update_Door());
+                    AddToCheckLine(lijstPlanten.get(i).getId(), lijstPlanten.get(i).getFgsv().trim(), temp.getVoornaam().trim() + " " + temp.getAchternaam(), lijstPlanten.get(i).getLaatste_update_datum(), lijstPlanten.get(i).getStatus());
+                }
+            } catch (NullPointerException ne) {
+                JOptionPane.showMessageDialog(null, "Er zijn bepaalde gegevens van de gebruiker niet gevonden");
             }
+
         }
         SchermProperties();
     }
@@ -109,7 +122,7 @@ public class ControllerControlerenEnGoedkeurenTransacties {
     // Functions
     // Auteur Dario
     // genereert een nieuwe regel dat gecontroleerd moet worden
-    private void AddToCheckLine(int plantID, String plantnaam, String naamGebruiker, Date lastUpdated) {
+    private void AddToCheckLine(int plantID, String plantnaam, String naamGebruiker, Date lastUpdated, int status) {
         //Labels aanmaken voor in de nieuwe regel
         Label linePlantnaam = new Label("Plant: " + plantnaam);
         Label lineNaamGebruiker = new Label("Aangepast door: " + naamGebruiker);
@@ -120,19 +133,50 @@ public class ControllerControlerenEnGoedkeurenTransacties {
         lineNaamGebruiker.setStyle("-fx-font: 14 system;");
         lineDatumToegevoed.setStyle("-fx-font: 14 system;");
 
-        //Button aanmaken en stylen voor de nieuwe regel
-        Button bttnControleer = new Button("Controleer");
+        Button bttnControleer = new Button("controleer");
         bttnControleer.setId(Integer.toString(plantID));
         bttnControleer.setStyle("-fx-font: 14 system;");
 
-        //Click event aanmaken voor op de Button voor de nieuwe regel
-        bttnControleer.setOnMouseClicked(mouseEvent -> {
-            try {
-                ButtonEventGoToCheckID(bttnControleer);
-            } catch (IOException | SQLException e) {
-                e.printStackTrace();
+        if (gebruiker.getRol().equals("student")) {
+            Status temp = null;
+            switch (status)
+            {
+                case 0:
+                    temp = Status.inBewerking;
+                    break;
+                case 1:
+                    temp = Status.teControleren;
+                    break;
+                case 2:
+                    temp = Status.goedgekeurd;
+                    break;
             }
-        });
+            Label lineStatusPlant = new Label("status: " + temp);
+            lineStatusPlant.setStyle("-fx-font: 14 system;");
+            VBoxStatusPlant.getChildren().add(lineStatusPlant);
+
+            bttnControleer.setText("Wijzigen");
+            //Click event aanmaken voor op de Button voor de nieuwe regel
+            bttnControleer.setOnMouseClicked(mouseEvent -> {
+                try {
+                    ButtonEventGoToCheckID(bttnControleer, "PlantWijzigen");
+                } catch (IOException | SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+        } else if ((gebruiker.getRol().equals("docent")) || (gebruiker.getRol().equals("admin"))) {
+
+            bttnControleer.setText("Controleren");
+
+            //Click event aanmaken voor op de Button voor de nieuwe regel
+            bttnControleer.setOnMouseClicked(mouseEvent -> {
+                try {
+                    ButtonEventGoToCheckID(bttnControleer, "GedetailleerdeFiches_(teControleren)");
+                } catch (IOException | SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
         //De regel plaatsen in de bestaande Vboxen. Dit dient om een mooie uitlijning te krijgen
         VBoxPlantNaam.getChildren().add(linePlantnaam);
         VBoxNaamGebruiker.getChildren().add(lineNaamGebruiker);
@@ -142,23 +186,23 @@ public class ControllerControlerenEnGoedkeurenTransacties {
 
     // Auteur Dario
     // opent de gedetailleerde scherm met de gevraagde ID
-    private void ButtonEventGoToCheckID(Button button) throws IOException, SQLException {
+    private void ButtonEventGoToCheckID(Button button, String Scherm) throws IOException, SQLException {
         //Hier vang ik de verwijzing op indien ze  een scherm meegeven die niet bestaat
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/GedetailleerdeFiches_(teControleren).fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            //Hier link ik een event (bijvoorbeeld button) aan zodat het scherm open gaat bij het event
-            Stage window = (Stage) button.getScene().getWindow();
-            //Controller Aanvragen van Scherm (deze is gelinkt in schermxml) --> KLasse Controller nog aanpassen naar correcte controller volgens scherm.
-            ControllerValidatiePlant controller = loader.getController();
-            //hier de Methode initialize aan gesproken en parameter meegegeven. --> Indien de methode anders gebruik word moet deze hier ook aangepast worden.
-            controller.initialize(Integer.parseInt(button.getId()));
-            window.setScene(scene);
-            window.show();
-        } catch (NullPointerException ne) {
+        //try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/" + Scherm + ".fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        //Hier link ik een event (bijvoorbeeld button) aan zodat het scherm open gaat bij het event
+        Stage window = (Stage) button.getScene().getWindow();
+        //Controller Aanvragen van Scherm (deze is gelinkt in schermxml) --> KLasse Controller nog aanpassen naar correcte controller volgens scherm.
+        ControllerValidatiePlant controller = loader.getController();
+        //hier de Methode initialize aan gesproken en parameter meegegeven. --> Indien de methode anders gebruik word moet deze hier ook aangepast worden.
+        controller.initialize(Integer.parseInt(button.getId()));
+        window.setScene(scene);
+        window.show();
+       /* } catch (NullPointerException ne) {
             JOptionPane.showMessageDialog(null, "Het gevraagde scherm is niet gevonden");
-        }
+        }*/
     }
 
     // Auteur Dario
@@ -182,8 +226,34 @@ public class ControllerControlerenEnGoedkeurenTransacties {
         // dit doen we om een correcte hoogte & breedte weer te geven bij opstart
         AnchorPaneBase.setPrefHeight(ScrollPaneList.getHeight());
         AnchorPaneBase.setPrefWidth(ScrollPaneList.getWidth());
+
         //Hier binden we de title pane aan de anchorpane
         TitledPaneMain.prefWidthProperty().bind(AnchorPaneBase.widthProperty());
         TitledPaneMain.prefHeightProperty().bind(AnchorPaneBase.heightProperty());
+    }
+
+    //Author : Leandro
+    private void LijstWeerTeGevenControle() throws SQLException {
+        try {
+            switch (gebruiker.getRol()) {
+                case "student":
+                    lijstPlanten = plantDAO.Getplantbylaatstupdatedoor(gebruiker.getID());
+                    System.out.println("student");
+                    break;
+                case "docent":
+                case "admin":
+                    lijstPlanten = plantDAO.GetPlantIdByStatus(Status.teControleren.statusValue);
+                    System.out.println("docent/admin");
+                    break;
+                default:
+                    StatusToCheck = null;
+                    lijstPlanten = null;
+                    break;
+            }
+
+        } catch (NullPointerException ne) {
+            JOptionPane.showMessageDialog(null, "Er werd geen gebruiker terug gevonden");
+
+        }
     }
 }
