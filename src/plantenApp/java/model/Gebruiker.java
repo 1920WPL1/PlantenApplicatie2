@@ -28,7 +28,6 @@ public class Gebruiker {
         this.aanvraag_status = aanvraag_status;
         this.last_login = last_login;
         this.geregistreerd = geregistreerd;
-        this.last_login = last_login;
         this.wachtwoord_hash = wachtwoord_hash;
         this.salt = salt;
     }

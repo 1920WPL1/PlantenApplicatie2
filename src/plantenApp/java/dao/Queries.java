@@ -20,6 +20,8 @@ public interface Queries {
     String GETPLANTBYSTATUS = "SELECT * FROM plant WHERE status = ?";
 
 
+    //Author Leandro
+    String GETPLANTBYLAATSTE_UPDATE_DOOR = "SELECT * FROM plant WHERE laatste_update_door = ?";
     //region GETBYID
     String GETPLANTBYID = "SELECT * FROM plant WHERE plant_id = ?";
 
@@ -37,6 +39,8 @@ public interface Queries {
     String GETEXTRABYPLANTID = "SELECT * FROM extra WHERE plant_id = ?";
 
     String GETFOTOBYPLANTID = "SELECT * FROM foto WHERE plant_id = ?";
+
+    String GETHABITUSFOTOBYWAARDE = "SELECT afbeelding FROM habitus WHERE waarde= ?";
     //endregion
 
     //region GETIDBYKENMERKEN
@@ -169,7 +173,7 @@ public interface Queries {
     //region NAAKTETABELLEN
 
     String NTTYPE =
-            "SELECT type_naam FROM planttype";
+            "SELECT planttype_naam FROM planttype";
 
     String NTFAMILIE =
             "SELECT familie_naam FROM familie";

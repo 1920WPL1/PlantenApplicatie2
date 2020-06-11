@@ -1,16 +1,21 @@
 package plantenApp.java.dao;
 
+import javafx.scene.image.Image;
 import plantenApp.java.model.InfoTables;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
 /**@author Siebe*/
 public class InfoTablesDAO implements Queries {
     private Connection dbConnection;
+    private PreparedStatement stmtGetHabitusById;
 
     public InfoTablesDAO(Connection dbConnection) throws SQLException {
         this.dbConnection = dbConnection;
+
     }
 
     /**
@@ -61,10 +66,26 @@ public class InfoTablesDAO implements Queries {
         return blobs;
     }
 
+    //Author Leandro
+    public javafx.scene.image.Image getInfoTableBlobHabitus(String Habitus) throws SQLException, IOException {
+        InputStream is = null;
+        Image img;
+        Blob blob = null;
+        stmtGetHabitusById = dbConnection.prepareStatement(GETHABITUSFOTOBYWAARDE);
+        stmtGetHabitusById.setString(1, Habitus);
+        ResultSet rs = stmtGetHabitusById.executeQuery();
+        while (rs.next()) {
+            blob = rs.getBlob(1);
+        }
+        is = blob.getBinaryStream();
+        img =  new Image(is);
+        return img;
+    }
+
     // functie om de String Query in te vullen bij 'getInfoTable'
   public InfoTables getInfoTables() throws SQLException{
         InfoTables infoTables = new InfoTables(
-                getInfoTableString(NTTYPE, "type_naam"),
+                getInfoTableString(NTTYPE, "planttype_naam"),
                 getInfoTableString(NTFAMILIE, "familie_naam"),
                 getInfoTableString(NTKLEUREN, "kleur"),
                 getInfoTableString(NTBLADGROOTTE, "waarde"),

@@ -12,8 +12,8 @@
 <AnchorPane fx:id="AnchorPaneBase" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plantenApp.ControllerControlerenEnGoedkeurenTransacties">
    <children>
       <TitledPane fx:id="TitledPaneMain" animated="false" collapsible="false" text="Transactie beheer">
-        <content>
-          <AnchorPane fx:id="AnchorPaneList">
+         <content>
+            <AnchorPane fx:id="AnchorPaneList">
                <children>
                   <VBox fx:id="Vbox" layoutX="14.0" layoutY="14.0" spacing="10.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                      <children>
@@ -53,12 +53,17 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </VBox>
+                                    <VBox fx:id="VBoxStatusPlant" fillWidth="false" layoutX="81.0" layoutY="20.0" spacing="30.0">
+                                       <padding>
+                                          <Insets right="20.0" top="5.0" />
+                                       </padding>
+                                    </VBox>
                                     <VBox fx:id="VBoxButtonsControleer" fillWidth="false" spacing="20.0">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                        <padding>
-                                          <Insets right="30.0" />
+                                          <Insets right="20.0" />
                                        </padding>
                                     </VBox>
                                  </children>

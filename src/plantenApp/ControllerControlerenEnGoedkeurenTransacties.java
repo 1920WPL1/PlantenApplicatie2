@@ -30,6 +30,9 @@ import java.util.Date;
 import java.util.List;
 
 public class ControllerControlerenEnGoedkeurenTransacties {
+    public AnchorPane AnchorPaneList;
+    public VBox Vbox;
+
     // Auteur Dario
     // enum aangemaakt voor magic numbers te vermijden voor te zoeken naar de status van de plant
     public enum Status {
